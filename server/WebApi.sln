@@ -9,9 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi.Tests", "WebApi.Test
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{C020BB48-0DD6-49AD-83C1-202A9E105AEA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{7A89BB5C-69EC-4BE1-A661-FABE067CF773}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Application\Application.csproj", "{7A89BB5C-69EC-4BE1-A661-FABE067CF773}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{29FC293D-B9E0-4241-BE5F-777154BB6A28}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{29FC293D-B9E0-4241-BE5F-777154BB6A28}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPI.MockFactory.Tests", "WebAPI.MockFactory.Tests\WebAPI.MockFactory.Tests.csproj", "{67E7D29C-17D4-44F6-9BE1-A35FADB534DC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{29FC293D-B9E0-4241-BE5F-777154BB6A28}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{29FC293D-B9E0-4241-BE5F-777154BB6A28}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{29FC293D-B9E0-4241-BE5F-777154BB6A28}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67E7D29C-17D4-44F6-9BE1-A35FADB534DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67E7D29C-17D4-44F6-9BE1-A35FADB534DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67E7D29C-17D4-44F6-9BE1-A35FADB534DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67E7D29C-17D4-44F6-9BE1-A35FADB534DC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

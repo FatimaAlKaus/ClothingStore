@@ -23,7 +23,7 @@
         [HttpGet]
         public ActionResult<List<ProductDto>> Get()
         {
-            return this.Ok(_productService.GetProducts());
+            return Ok(_productService.GetProducts());
         }
 
         [HttpPost]

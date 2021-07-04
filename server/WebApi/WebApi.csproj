@@ -16,11 +16,6 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Application\Application.csproj" />
-    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
-  </ItemGroup>
-
   <PropertyGroup>
     <CodeAnalysisRuleSet>../_stylecop/stylecop.ruleset</CodeAnalysisRuleSet>
     <GenerateFullPaths>true</GenerateFullPaths>
@@ -28,6 +23,12 @@
 
   <ItemGroup>
     <AdditionalFiles Include="../_stylecop/stylecop.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Application\Application.csproj" />
+    <ProjectReference Include="..\Domain\Domain.csproj" />
+    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
 
 
