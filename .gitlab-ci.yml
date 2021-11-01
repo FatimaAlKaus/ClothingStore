@@ -17,4 +17,5 @@ build_server:
     - docker
   stage: build
   script:
+    - dir
     - dotnet build
