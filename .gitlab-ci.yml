@@ -1,6 +1,7 @@
 image: node
 
 stages:
+  - build
   - lint
 
 eslint:
@@ -11,3 +12,10 @@ eslint:
     - npm install -g lerna
     - lerna bootstrap --hoist
     - npm run lint
+build_server:
+  tags:
+    - docker
+  stage: build
+  script:
+    - cd /server
+    - dotnet build
