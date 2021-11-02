@@ -3,19 +3,18 @@
     using System.Collections.ObjectModel;
     using System.ComponentModel.DataAnnotations;
 
-    public class Product
+    public class User
     {
         public int Id { get; set; }
 
         [Required]
         [MinLength(2)]
-        public string Name { get; set; }
+        public string Login { get; set; }
 
-        public Order Order { get; set; }
-
-        [Required]
-        public Collection<Category> Categories { get; set; }
+        public Cart Cart { get; set; }
 
         public Collection<Comment> Comments { get; set; }
+
+        public Collection<Order> Orders { get; set; }
     }
 }

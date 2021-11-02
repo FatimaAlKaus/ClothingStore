@@ -3,7 +3,7 @@
     using System.Collections.ObjectModel;
     using System.ComponentModel.DataAnnotations;
 
-    public class Product
+    public class Category
     {
         public int Id { get; set; }
 
@@ -11,11 +11,6 @@
         [MinLength(2)]
         public string Name { get; set; }
 
-        public Order Order { get; set; }
-
-        [Required]
-        public Collection<Category> Categories { get; set; }
-
-        public Collection<Comment> Comments { get; set; }
+        public Collection<Product> Products { get; set; }
     }
 }
