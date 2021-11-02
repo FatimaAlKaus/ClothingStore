@@ -20,6 +20,8 @@
 
         public DbSet<Order> Orders { get; set; }
 
+        public DbSet<Comment> Comments { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
         }

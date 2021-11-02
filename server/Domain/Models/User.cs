@@ -16,5 +16,7 @@
         public Collection<Comment> Comments { get; set; }
 
         public Collection<Order> Orders { get; set; }
+
+        public Collection<Rating> Ratings { get; set; }
     }
 }

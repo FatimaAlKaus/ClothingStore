@@ -17,5 +17,7 @@
         public Collection<Category> Categories { get; set; }
 
         public Collection<Comment> Comments { get; set; }
+
+        public Collection<Rating> Ratings { get; set; }
     }
 }
