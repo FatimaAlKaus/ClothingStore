@@ -1,9 +1,9 @@
-﻿using Application.Interfaces;
-using Application.Services;
-using WebAPI.MockFactory.Tests.Factory.Interfaces;
-
-namespace WebAPI.MockFactory.Tests.Factory
+﻿namespace WebAPI.MockFactory.Tests.Factory
 {
+    using Application.Interfaces;
+    using Application.Services;
+    using WebAPI.MockFactory.Tests.Factory.Interfaces;
+
     public class ServiceFactory : IServiceFactory
     {
         private readonly IRepositoryFactory _repositoryFactory;

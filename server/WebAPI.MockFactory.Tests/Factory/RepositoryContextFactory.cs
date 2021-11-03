@@ -1,12 +1,12 @@
-﻿using Infrastructure.EF;
-using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Data.Common;
-using WebAPI.MockFactory.Tests.Factory.Interfaces;
-
-namespace WebAPI.MockFactory.Tests.Factory
+﻿namespace WebAPI.MockFactory.Tests.Factory
 {
+    using System;
+    using System.Data.Common;
+    using Infrastructure.EF;
+    using Microsoft.Data.Sqlite;
+    using Microsoft.EntityFrameworkCore;
+    using WebAPI.MockFactory.Tests.Factory.Interfaces;
+
     public class RepositoryContextFactory : IRepositoryContextFactory
     {
         private readonly string _connectionString;

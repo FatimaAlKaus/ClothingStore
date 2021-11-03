@@ -1,10 +1,10 @@
-﻿using Microsoft.Extensions.Logging;
-using System;
-using WebAPI.MockFactory.Tests.Factory.Interfaces;
-using WebAPI.MockFactory.Tests.Utils;
-
-namespace WebAPI.MockFactory.Tests.Factory
+﻿namespace WebAPI.MockFactory.Tests.Factory
 {
+    using System;
+    using Microsoft.Extensions.Logging;
+    using WebAPI.MockFactory.Tests.Factory.Interfaces;
+    using WebAPI.MockFactory.Tests.Utils;
+
     public sealed class TestDataFactory : ITestDataFactory
     {
         private const string DatabaseConnectionString = "DataSource=:memory:";
@@ -52,7 +52,7 @@ namespace WebAPI.MockFactory.Tests.Factory
         // If disposing equals false, the method has been called by the
         // runtime from inside the finalizer and you should not reference
         // other objects. Only unmanaged resources can be disposed.
-        protected void Dispose(bool disposing)
+        private void Dispose(bool disposing)
         {
             // Check to see if Dispose has already been called.
             if (!_disposed)

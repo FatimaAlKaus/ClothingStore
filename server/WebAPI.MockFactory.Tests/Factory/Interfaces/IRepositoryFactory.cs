@@ -1,7 +1,7 @@
-﻿using Domain.Repository;
-
-namespace WebAPI.MockFactory.Tests.Factory.Interfaces
+﻿namespace WebAPI.MockFactory.Tests.Factory.Interfaces
 {
+    using Domain.Repository;
+
     public interface IRepositoryFactory
     {
         IProductRepository CreateProductRepository();

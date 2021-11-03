@@ -1,7 +1,7 @@
-﻿using WebApi.Controllers;
-
-namespace WebAPI.MockFactory.Tests.Factory.Interfaces
+﻿namespace WebAPI.MockFactory.Tests.Factory.Interfaces
 {
+    using WebApi.Controllers;
+
     public interface IControllerFactory
     {
         ProductsController CreateProductsController();
