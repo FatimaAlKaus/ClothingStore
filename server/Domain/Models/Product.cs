@@ -3,10 +3,8 @@
     using System.Collections.ObjectModel;
     using System.ComponentModel.DataAnnotations;
 
-    public class Product
+    public class Product : BaseEntity
     {
-        public int Id { get; set; }
-
         [Required]
         [MinLength(2)]
         public string Name { get; set; }
@@ -15,6 +13,13 @@
 
         [Required]
         public Collection<Category> Categories { get; set; }
+
+        [Required]
+        public decimal Price { get; set; }
+
+        [Required]
+
+        public bool IsDeleted { get; set; }
 
         public Collection<Comment> Comments { get; set; }
 

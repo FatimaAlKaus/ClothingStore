@@ -3,9 +3,18 @@
     using System.Collections.ObjectModel;
     using System.ComponentModel.DataAnnotations;
 
-    public class User
+    public class User : BaseEntity
     {
-        public int Id { get; set; }
+        [Required]
+        [MinLength(2)]
+        public string FirstName { get; set; }
+
+        [Required]
+        [MinLength(2)]
+        public string SecondName { get; set; }
+
+        [MinLength(2)]
+        public string Patronymic { get; set; }
 
         [Required]
         [MinLength(2)]

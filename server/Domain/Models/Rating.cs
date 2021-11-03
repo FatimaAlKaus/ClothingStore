@@ -2,10 +2,8 @@
 {
     using System.ComponentModel.DataAnnotations;
 
-    public class Rating
+    public class Rating : BaseEntity
     {
-        public int Id { get; set; }
-
         [Required]
         public Product Product { get; set; }
 
