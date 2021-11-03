@@ -1,9 +1,9 @@
-﻿using Infrastructure.EF;
-using Microsoft.Extensions.Logging;
-using System;
-
-namespace WebAPI.MockFactory.Tests.Utils
+﻿namespace WebAPI.MockFactory.Tests.Utils
 {
+    using System;
+    using Infrastructure.EF;
+    using Microsoft.Extensions.Logging;
+
     public interface IDatabaseInitializer
     {
         void InitializeDatabase(Action<ILogger<DatabaseInitializer>, DatabaseContext> initializeAction);

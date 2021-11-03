@@ -1,8 +1,8 @@
-﻿using Infrastructure.EF;
-using System;
-
-namespace WebAPI.MockFactory.Tests.Factory.Interfaces
+﻿namespace WebAPI.MockFactory.Tests.Factory.Interfaces
 {
+    using System;
+    using Infrastructure.EF;
+
     public interface IRepositoryContextFactory : IDisposable
     {
         DatabaseContext CreateDatabaseContext();

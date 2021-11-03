@@ -1,11 +1,11 @@
-﻿using Infrastructure.EF;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using System;
-using WebAPI.MockFactory.Tests.Factory.Interfaces;
-
-namespace WebAPI.MockFactory.Tests.Utils
+﻿namespace WebAPI.MockFactory.Tests.Utils
 {
+    using System;
+    using Infrastructure.EF;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Logging;
+    using WebAPI.MockFactory.Tests.Factory.Interfaces;
+
     public sealed class DatabaseInitializer : IDatabaseInitializer
     {
         private readonly ILogger<DatabaseInitializer> _logger;

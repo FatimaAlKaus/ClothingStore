@@ -1,9 +1,9 @@
-﻿using Microsoft.Extensions.Logging;
-using WebApi.Controllers;
-using WebAPI.MockFactory.Tests.Factory.Interfaces;
-
-namespace WebAPI.MockFactory.Tests.Factory
+﻿namespace WebAPI.MockFactory.Tests.Factory
 {
+    using Microsoft.Extensions.Logging;
+    using WebApi.Controllers;
+    using WebAPI.MockFactory.Tests.Factory.Interfaces;
+
     public class ControllerFactory : IControllerFactory
     {
         private readonly IServiceFactory _serviceFactory;
