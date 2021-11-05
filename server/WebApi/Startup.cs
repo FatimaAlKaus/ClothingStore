@@ -2,9 +2,9 @@ namespace WebApi
 {
     using Application.Interfaces;
     using Application.Services;
-    using CleanArchitecture.Infra.Data.Repositories;
     using Domain.Repository;
     using Infrastructure.EF;
+    using Infrastructure.Repository;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.EntityFrameworkCore;

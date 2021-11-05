@@ -1,7 +1,7 @@
 ﻿namespace WebAPI.MockFactory.Tests.Factory
 {
-    using CleanArchitecture.Infra.Data.Repositories;
     using Domain.Repository;
+    using Infrastructure.Repository;
     using WebAPI.MockFactory.Tests.Factory.Interfaces;
 
     public class RepositoryFactory : IRepositoryFactory
