@@ -41,5 +41,21 @@
         {
             return new CategoryDto(_repository.Update(category.ToModel()));
         }
+
+        public void Delete(int id)
+        {
+            _repository.Remove(_repository.GetById(id));
+        }
+
+        public CategoryDto GetByName(string name)
+        {
+            var category = _repository.FirstOrDefault(x => x.Name == name);
+            if (category is null)
+            {
+                return null;
+            }
+
+            return new CategoryDto(category);
+        }
     }
 }

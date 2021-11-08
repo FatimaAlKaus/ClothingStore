@@ -1,6 +1,8 @@
 ﻿namespace Infrastructure.Repository
 {
+    using System;
     using System.Collections.Generic;
+    using System.Linq;
     using Domain.Models;
     using Domain.Repository;
     using Infrastructure.EF;
@@ -20,6 +22,7 @@
 
         public T Add(T entity)
         {
+            entity.CreatedDate = entity.ModifiedDate = DateTime.Now;
             var entry = _context.Set<T>().Add(entity);
             _context.SaveChanges();
             return entry.Entity;
@@ -32,7 +35,7 @@
 
         public T GetById(int id)
         {
-            return _context.Set<T>().Find(id);
+            return _context.Set<T>().AsNoTracking().FirstOrDefault(e => e.Id == id);
         }
 
         public void Remove(T entity)
@@ -43,9 +46,10 @@
 
         public T Update(T entity)
         {
-            var entry = _context.Set<T>().Update(entity);
+            entity.ModifiedDate = DateTime.Now;
+            _context.Entry(entity).State = EntityState.Modified;
             _context.SaveChanges();
-            return entry.Entity;
+            return entity;
         }
     }
 }

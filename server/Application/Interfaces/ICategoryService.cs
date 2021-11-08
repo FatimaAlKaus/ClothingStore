@@ -13,5 +13,9 @@
         CategoryDto Add(CategoryCreateRequestDto category);
 
         CategoryDto Update(CategoryUpdateRequestDto category);
+
+        CategoryDto GetByName(string name);
+
+        void Delete(int id);
     }
 }
