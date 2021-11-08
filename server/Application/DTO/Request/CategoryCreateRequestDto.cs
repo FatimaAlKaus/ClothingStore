@@ -19,8 +19,6 @@
             return new Category()
             {
                 Name = this.Name,
-                CreatedDate = createdDate,
-                ModifiedDate = createdDate,
             };
         }
     }

@@ -1,6 +1,5 @@
 ﻿namespace Application.DTO.Request
 {
-    using System;
     using System.ComponentModel.DataAnnotations;
     using Application.Interfaces;
     using Domain.Models;
@@ -17,7 +16,7 @@
 
         public Category ToModel()
         {
-            return new Category() { Id = this.Id, ModifiedDate = DateTime.Now, Name = this.Name };
+            return new Category() { Id = this.Id, Name = this.Name };
         }
     }
 }
