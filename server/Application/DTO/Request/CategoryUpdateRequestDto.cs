@@ -1,10 +1,8 @@
 ﻿namespace Application.DTO.Request
 {
     using System.ComponentModel.DataAnnotations;
-    using Application.Interfaces;
-    using Domain.Models;
 
-    public class CategoryUpdateRequestDto : IDtoMapper<Category>
+    public class CategoryUpdateRequestDto
     {
         [Required]
         public int Id { get; init; }
@@ -13,10 +11,5 @@
         [MinLength(2)]
         [MaxLength(50)]
         public string Name { get; init; }
-
-        public Category ToModel()
-        {
-            return new Category() { Id = this.Id, Name = this.Name };
-        }
     }
 }

@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
     using Application.DTO.Request;
-    using Application.ViewModels;
+    using Application.DTO.Response;
 
     public interface IProductService
     {

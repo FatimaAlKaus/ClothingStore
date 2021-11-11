@@ -1,9 +1,11 @@
 ﻿namespace WebApi.Controllers
 {
     using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
     using Application.DTO.Request;
+    using Application.DTO.Response;
     using Application.Interfaces;
-    using Application.ViewModels;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
 
@@ -21,15 +23,15 @@
         }
 
         [HttpGet]
-        public ActionResult<List<CategoryDto>> GetAll()
+        public async Task<ActionResult<List<CategoryDto>>> GetAll()
         {
-            return Ok(_categoryService.GetAll());
+            return Ok(await _categoryService.GetAll());
         }
 
         [HttpGet("{id}")]
-        public ActionResult<CategoryDto> Get(int id)
+        public async Task<ActionResult<CategoryDto>> Get(int id)
         {
-            var categoryDto = _categoryService.GetById(id);
+            var categoryDto = await _categoryService.GetById(id);
             if (categoryDto is null)
             {
                 return NotFound("Category with this Id was not found");
@@ -39,11 +41,11 @@
         }
 
         [HttpPost]
-        public ActionResult<CategoryDto> Create([FromBody] CategoryCreateRequestDto category)
+        public async Task<ActionResult<CategoryDto>> Create([FromBody] CategoryCreateRequestDto category)
         {
-            if (_categoryService.GetByName(category.Name) is null)
+            if (!(await _categoryService.GetAll()).Any(x => x.Name == category.Name))
             {
-                var categoryDto = _categoryService.Add(category);
+                var categoryDto = await _categoryService.Create(category);
                 string uri = Request.Path.Value + "/" + categoryDto.Id;
                 return Created(uri, categoryDto);
             }
@@ -52,30 +54,30 @@
         }
 
         [HttpPut]
-        public ActionResult<CategoryDto> Update([FromBody] CategoryUpdateRequestDto category)
+        public async Task<ActionResult<CategoryDto>> Update([FromBody] CategoryUpdateRequestDto category)
         {
-            if (_categoryService.GetById(category.Id) is null)
+            if (await _categoryService.GetById(category.Id) is null)
             {
                 return NotFound("Category with this Id was not found");
             }
 
-            if (_categoryService.GetByName(category.Name) is not null)
+            if ((await _categoryService.GetAll()).Any(x => x.Name == category.Name))
             {
                 return Conflict("A category with the same name already exists");
             }
 
-            return Ok(_categoryService.Update(category));
+            return Ok(await _categoryService.Update(category));
         }
 
         [HttpDelete("{id}")]
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            if (_categoryService.GetById(id) is null)
+            if (await _categoryService.GetById(id) is null)
             {
                 return NotFound("Category with this Id was not found");
             }
 
-            _categoryService.Delete(id);
+            await _categoryService.Delete(id);
             return NoContent();
         }
     }

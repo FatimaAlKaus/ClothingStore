@@ -1,21 +1,20 @@
 ﻿namespace Application.Interfaces
 {
     using System.Collections.Generic;
+    using System.Threading.Tasks;
     using Application.DTO.Request;
-    using Application.ViewModels;
+    using Application.DTO.Response;
 
     public interface ICategoryService
     {
-        CategoryDto GetById(int id);
+        Task<CategoryDto> GetById(int id);
 
-        List<CategoryDto> GetAll();
+        Task<List<CategoryDto>> GetAll();
 
-        CategoryDto Add(CategoryCreateRequestDto category);
+        Task<CategoryDto> Create(CategoryCreateRequestDto category);
 
-        CategoryDto Update(CategoryUpdateRequestDto category);
+        Task<CategoryDto> Update(CategoryUpdateRequestDto category);
 
-        CategoryDto GetByName(string name);
-
-        void Delete(int id);
+        Task Delete(int id);
     }
 }

@@ -1,11 +1,11 @@
 ﻿namespace Domain.Models
 {
-    using System.Collections.ObjectModel;
+    using System.Collections.Generic;
 
     public class Cart : BaseEntity
     {
         public User User { get; set; }
 
-        public Collection<Product> Products { get; set; }
+        public ICollection<Product> Products { get; set; }
     }
 }

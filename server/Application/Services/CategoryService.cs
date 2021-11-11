@@ -2,10 +2,13 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
     using Application.DTO.Request;
+    using Application.DTO.Response;
     using Application.Interfaces;
-    using Application.ViewModels;
+    using Domain.Models;
     using Domain.Repository;
+    using Mapster;
 
     public class CategoryService : ICategoryService
     {
@@ -16,46 +19,31 @@
             _repository = repository;
         }
 
-        public CategoryDto Add(CategoryCreateRequestDto category)
+        public async Task<CategoryDto> Create(CategoryCreateRequestDto category)
         {
-            return new CategoryDto(_repository.Add(category.ToModel()));
+            return (await _repository.Add(category.Adapt<Category>()))
+                .Adapt<CategoryDto>();
         }
 
-        public List<CategoryDto> GetAll()
+        public async Task<List<CategoryDto>> GetAll()
         {
-            return _repository.GetAll().Select(x => new CategoryDto(x)).ToList();
+            var collection = await _repository.GetAll();
+            return collection.Select(x => x.Adapt<CategoryDto>()).ToList();
         }
 
-        public CategoryDto GetById(int id)
+        public async Task<CategoryDto> GetById(int id)
         {
-            var category = _repository.GetById(id);
-            if (category is null)
-            {
-                return null;
-            }
-
-            return new CategoryDto(category);
+            return (await _repository.GetById(id)).Adapt<CategoryDto>();
         }
 
-        public CategoryDto Update(CategoryUpdateRequestDto category)
+        public async Task<CategoryDto> Update(CategoryUpdateRequestDto category)
         {
-            return new CategoryDto(_repository.Update(category.ToModel()));
+            return (await _repository.Update(category.Adapt<Category>())).Adapt<CategoryDto>();
         }
 
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
-            _repository.Remove(_repository.GetById(id));
-        }
-
-        public CategoryDto GetByName(string name)
-        {
-            var category = _repository.FirstOrDefault(x => x.Name == name);
-            if (category is null)
-            {
-                return null;
-            }
-
-            return new CategoryDto(category);
+            await _repository.Remove(await _repository.GetById(id));
         }
     }
 }

@@ -3,9 +3,11 @@
     using System.Collections.Generic;
     using System.Linq;
     using Application.DTO.Request;
+    using Application.DTO.Response;
     using Application.Interfaces;
-    using Application.ViewModels;
+    using Domain.Models;
     using Domain.Repository;
+    using Mapster;
 
     public class ProductService : IProductService
     {
@@ -18,12 +20,12 @@
 
         public List<ProductDto> GetProducts()
         {
-            return _productRepository.GetProducts().Select(x => new ProductDto(x)).ToList();
+            return _productRepository.GetProducts().Select(x => x.Adapt<ProductDto>()).ToList();
         }
 
         public ProductDto InsetProduct(ProductCreateRequestDto product)
         {
-            return new ProductDto(_productRepository.InsertProduct(product.ToModel()));
+            return _productRepository.InsertProduct(product.Adapt<Product>()).Adapt<ProductDto>();
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿namespace WebApi.Tests.ProductsController
 {
     using System.Collections.Generic;
-    using Application.ViewModels;
+    using Application.DTO.Response;
     using Infrastructure.EF;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
