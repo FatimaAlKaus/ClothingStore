@@ -1,12 +1,8 @@
 ﻿namespace Domain.Repository
 {
-    using System.Linq;
     using Domain.Models;
 
-    public interface IProductRepository
+    public interface IProductRepository : IAsyncRepository<Product>
     {
-        IQueryable<Product> GetProducts();
-
-        Product InsertProduct(Product product);
     }
 }

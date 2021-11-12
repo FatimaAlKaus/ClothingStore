@@ -27,7 +27,7 @@
             Controllers.ProductsController productsController = controllerFactory.CreateProductsController();
 
             // Act
-            var result = productsController.Get();
+            var result = productsController.GetAll().Result;
             var successResult = result.Result as OkObjectResult;
             var listOfProducts = successResult.Value as List<ProductDto>;
 

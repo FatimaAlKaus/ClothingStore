@@ -1,30 +1,35 @@
 ﻿namespace Infrastructure.Repository
 {
-    using System.Linq;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
     using Domain.Models;
     using Domain.Repository;
     using Infrastructure.EF;
     using Microsoft.EntityFrameworkCore;
 
-    public class ProductRepository : IProductRepository
+    public class ProductRepository : BaseAsyncRepository<Product>, IProductRepository
     {
-        private DatabaseContext context;
-
         public ProductRepository(DatabaseContext context)
+            : base(context)
         {
-            this.context = context;
         }
 
-        public Product InsertProduct(Product product)
+        public override async Task<IEnumerable<Product>> GetAll()
         {
-            var entity = context.Add(product);
-            context.SaveChanges();
-            return entity.Entity;
+            return await Context.Products.Include(x => x.Categories).ToListAsync();
         }
 
-        IQueryable<Product> IProductRepository.GetProducts()
+        public override async Task<Product> Update(Product entity)
         {
-            return context.Products.AsNoTracking();
+            Context.Entry(await Context.Products.FirstOrDefaultAsync(x => x.Id == entity.Id)).State = EntityState.Detached;
+            Context.Entry(entity).State = EntityState.Modified;
+
+            await Context.SaveChangesAsync();
+
+            return await Context.Products
+                .Include(x => x.Categories)
+                .AsNoTrackingWithIdentityResolution()
+                .FirstOrDefaultAsync(x => x.Id == entity.Id);
         }
     }
 }

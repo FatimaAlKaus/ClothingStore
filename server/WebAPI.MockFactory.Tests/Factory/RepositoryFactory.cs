@@ -13,6 +13,11 @@
             _repositoryContextFactory = repositoryContextFactory;
         }
 
+        public ICategoryRepository CreateCategoryRepository()
+        {
+            return new CategoryRepository(_repositoryContextFactory.CreateDatabaseContext());
+        }
+
         public IProductRepository CreateProductRepository()
         {
             return new ProductRepository(_repositoryContextFactory.CreateDatabaseContext());
