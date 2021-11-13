@@ -4,17 +4,18 @@
     using System.Threading.Tasks;
     using Application.DTO.Request;
     using Application.DTO.Response;
+    using Application.ServiceResult;
 
     public interface ICategoryService
     {
-        Task<CategoryDto> GetById(int id);
+        Task<BaseServiceResult<CategoryDto>> GetById(int id);
 
-        Task<List<CategoryDto>> GetAll();
+        Task<BaseServiceResult<List<CategoryDto>>> GetAll();
 
-        Task<CategoryDto> Create(CategoryCreateRequestDto category);
+        Task<BaseServiceResult<CategoryDto>> Create(CategoryCreateRequestDto category);
 
-        Task<CategoryDto> Update(CategoryUpdateRequestDto category);
+        Task<BaseServiceResult<CategoryDto>> Update(CategoryUpdateRequestDto category);
 
-        Task Delete(int id);
+        Task<BaseServiceResult> Delete(int id);
     }
 }

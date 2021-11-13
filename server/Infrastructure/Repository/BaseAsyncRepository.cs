@@ -33,7 +33,7 @@
 
         public virtual async Task<T> GetById(int id)
         {
-            return await _context.Set<T>().FirstOrDefaultAsync(x => x.Id == id);
+            return await _context.Set<T>().FirstAsync(x => x.Id == id);
         }
 
         public virtual async Task Remove(T entity)
