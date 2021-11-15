@@ -2,18 +2,12 @@ import React from 'react';
 
 import logo from './logo.svg';
 import './App.css';
+import { ProductCard } from './components/ProductCard';
 
 const App: React.FC = () => (
   <div className="App">
-    <header className="App-header">
-      <img src={logo} className="App-logo" alt="logo" />
-      <p>
-        Edit <code>src/App.tsx</code> and save to reload.
-      </p>
-      <a className="App-link" href="https://reactjs.org" target="_blank" rel="noopener noreferrer">
-        Learn React
-      </a>
-    </header>
+    <ProductCard imgPath="../images/7851.970.jpg" name="Кеды с рисунком" price={3999} id={5} />
+    <ProductCard imgPath="../images/7851.970.jpg" name="World" price={1000} id={5} />
   </div>
 );
 
