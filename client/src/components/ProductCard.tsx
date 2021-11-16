@@ -10,7 +10,7 @@ export const ProductCard: React.FC<ProductProps> = props => {
   const classes = useStyles();
   return (
     <Card className={classes.root}>
-      <CardMedia component="img" height="140" image={props.imgPath} />
+      <CardMedia component="img" image={props.imgPath} />
       <CardContent>
         <Typography variant="h5">{props.name}</Typography>
         <Typography variant="body2">{props.price} Руб</Typography>

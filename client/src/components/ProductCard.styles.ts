@@ -3,7 +3,7 @@ import { makeStyles, Theme, createStyles, hexToRgb } from '@material-ui/core/sty
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      maxWidth: '250px',
+      maxWidth: '350px',
       margin: '50px',
       borderRadius: '10px',
       textAlign: 'left',
