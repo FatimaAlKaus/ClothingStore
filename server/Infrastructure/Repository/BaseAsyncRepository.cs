@@ -33,7 +33,7 @@
 
         public virtual async Task<T> GetById(int id)
         {
-            return await _context.Set<T>().FirstAsync(x => x.Id == id);
+            return await _context.Set<T>().FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public virtual async Task Remove(T entity)
@@ -42,14 +42,11 @@
             await _context.SaveChangesAsync();
         }
 
-        public virtual async Task<T> Update(T entity)
+        public virtual async Task Update()
         {
-            _context.Entry(await _context.Set<T>().FirstOrDefaultAsync(x => x.Id == entity.Id)).State = EntityState.Detached;
-            _context.Entry(entity).State = EntityState.Modified;
-
+            // _context.Entry(await _context.Set<T>().FirstOrDefaultAsync(x => x.Id == entity.Id)).State = EntityState.Detached;
+            // _context.Entry(entity).State = EntityState.Modified;
             await _context.SaveChangesAsync();
-
-            return await _context.Set<T>().AsNoTracking().FirstOrDefaultAsync(x => x.Id == entity.Id);
         }
     }
 }

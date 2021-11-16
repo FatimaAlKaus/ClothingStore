@@ -31,7 +31,7 @@
             }
             else
             {
-                return NotFound();
+                return StatusCode(result.Error.StatusCode, result.Error);
             }
         }
 
@@ -45,7 +45,7 @@
             }
             else
             {
-                return NotFound();
+                return StatusCode(result.Error.StatusCode, result.Error);
             }
         }
 
@@ -59,7 +59,7 @@
             }
             else
             {
-                return BadRequest(result.Errors);
+                return StatusCode(result.Error.StatusCode, result.Error);
             }
         }
 
@@ -73,7 +73,7 @@
             }
             else
             {
-                return BadRequest(result.Errors);
+                return StatusCode(result.Error.StatusCode, result.Error);
             }
         }
 
@@ -87,7 +87,7 @@
             }
             else
             {
-                return BadRequest(result.Errors);
+                return StatusCode(result.Error.StatusCode, result.Error);
             }
         }
     }

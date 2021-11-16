@@ -1,11 +1,11 @@
 ﻿namespace Application.Interfaces
 {
-    using System.Collections.Generic;
+    using Application.Error;
 
     public interface IServiceResult
     {
         bool Success { get; set; }
 
-        ICollection<string> Errors { get; set; }
+        ApiError Error { get; set; }
     }
 }

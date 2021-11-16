@@ -6,11 +6,13 @@
     using System.Threading.Tasks;
     using Application.DTO.Request;
     using Application.DTO.Response;
+    using Application.Error;
     using Application.Interfaces;
     using Application.ServiceResult;
     using Domain.Models;
     using Domain.Repository;
     using Mapster;
+    using Microsoft.EntityFrameworkCore;
 
     public class CategoryService : ICategoryService
     {
@@ -23,86 +25,112 @@
 
         public async Task<BaseServiceResult<CategoryDto>> Create(CategoryCreateRequestDto category)
         {
-            CategoryDto dto = null;
             var result = new BaseServiceResult<CategoryDto>();
+
             try
             {
-                dto = (await _repository.Add(category.Adapt<Category>())).Adapt<CategoryDto>();
-            }
-            catch (Exception ex)
-            {
-                result.Errors.Add(ex.Message);
-                result.Success = false;
-                result.Data = null;
+                result.Data = (await _repository.Add(category.Adapt<Category>())).Adapt<CategoryDto>();
+                result.Success = true;
                 return result;
             }
+            catch (DbUpdateException)
+            {
+                result.Error = ApiError.Conflict("Name", nameof(Category), category.Name);
 
-            result.Data = dto;
-            result.Success = true;
-            return result;
+                result.Success = false;
+                return result;
+            }
+            catch (Exception)
+            {
+                result.Error = ApiError.InternalServerError("Failed to create new category");
+
+                result.Success = false;
+                return result;
+            }
         }
 
         public async Task<BaseServiceResult<List<CategoryDto>>> GetAll()
         {
-            List<CategoryDto> categories = null;
             var result = new BaseServiceResult<List<CategoryDto>>();
+
             try
             {
-                categories = (await _repository.GetAll()).Select(x => x.Adapt<CategoryDto>()).ToList();
-            }
-            catch (Exception ex)
-            {
-                result.Errors.Add(ex.Message);
-                result.Success = false;
-                result.Data = null;
+                result.Data = (await _repository.GetAll()).Select(x => x.Adapt<CategoryDto>()).ToList();
+                result.Success = true;
+
                 return result;
             }
-
-            result.Data = categories;
-            result.Success = true;
-            return result;
+            catch (Exception)
+            {
+                result.Error = ApiError.InternalServerError("Failed to get list of categories");
+                result.Success = false;
+                return result;
+            }
         }
 
         public async Task<BaseServiceResult<CategoryDto>> GetById(int id)
         {
-            CategoryDto category = null;
             var result = new BaseServiceResult<CategoryDto>();
+
             try
             {
-                category = (await _repository.GetById(id)).Adapt<CategoryDto>();
-            }
-            catch (Exception ex)
-            {
-                result.Errors.Add(ex.Message);
-                result.Success = false;
-                result.Data = null;
+                var dto = (await _repository.GetById(id)).Adapt<CategoryDto>();
+                if (dto is null)
+                {
+                    result.Success = false;
+                    result.Error = ApiError.NotFound(nameof(Category), id);
+                    return result;
+                }
+
+                result.Data = dto;
+                result.Success = true;
+
                 return result;
             }
-
-            result.Data = category;
-            result.Success = true;
-            return result;
+            catch (Exception)
+            {
+                result.Error = ApiError.InternalServerError("Failed to get category by id");
+                result.Success = false;
+                return result;
+            }
         }
 
         public async Task<BaseServiceResult<CategoryDto>> Update(CategoryUpdateRequestDto category)
         {
-            CategoryDto dto = null;
             var result = new BaseServiceResult<CategoryDto>();
             try
             {
-                dto = (await _repository.Update(category.Adapt<Category>())).Adapt<CategoryDto>();
-            }
-            catch (Exception ex)
-            {
-                result.Errors.Add(ex.Message);
-                result.Success = false;
-                result.Data = null;
+                var model = await _repository.GetById(category.Id);
+
+                if (model is null)
+                {
+                    result.Error = ApiError.NotFound(nameof(Category), category.Id);
+                    result.Success = false;
+                    return result;
+                }
+
+                model.Name = category.Name;
+                model.ModifiedDate = DateTimeOffset.Now;
+
+                await _repository.Update();
+                result.Data = model.Adapt<Category>().Adapt<CategoryDto>();
+                result.Success = true;
                 return result;
             }
+            catch (DbUpdateException)
+            {
+                result.Error = ApiError.Conflict("Name", nameof(Category), category.Name);
 
-            result.Data = dto;
-            result.Success = true;
-            return result;
+                result.Success = false;
+                return result;
+            }
+            catch (Exception)
+            {
+                result.Error = ApiError.InternalServerError("Failed to update category");
+
+                result.Success = false;
+                return result;
+            }
         }
 
         public async Task<BaseServiceResult> Delete(int id)
@@ -110,17 +138,25 @@
             var result = new BaseServiceResult();
             try
             {
-                await _repository.Remove(await _repository.GetById(id));
+                var model = await _repository.GetById(id);
+                if (model is null)
+                {
+                    result.Error = ApiError.NotFound(nameof(Category), id);
+                    result.Success = false;
+                    return result;
+                }
+
+                await _repository.Remove(model);
+                result.Success = true;
+                return result;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                result.Errors.Add(ex.Message);
+                result.Error = ApiError.InternalServerError("Failed to delete category");
+
                 result.Success = false;
                 return result;
             }
-
-            result.Success = true;
-            return result;
         }
     }
 }

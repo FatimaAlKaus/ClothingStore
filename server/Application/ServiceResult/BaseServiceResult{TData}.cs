@@ -6,12 +6,10 @@
         where TData : class
     {
         public BaseServiceResult()
-              : base()
         {
         }
 
         public BaseServiceResult(TData data)
-            : this()
         {
             Data = data;
         }
