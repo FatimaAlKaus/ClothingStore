@@ -5,6 +5,10 @@
     using Application.DTO.Request;
     using Application.DTO.Response;
     using Application.Interfaces;
+    using Application.UseCases.Category.Commands.CreateCategory;
+    using Application.UseCases.Category.Queries;
+    using Mapster;
+    using MediatR;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
 
@@ -14,25 +18,22 @@
     {
         private readonly ILogger<CategoriesController> _logger;
         private readonly ICategoryService _categoryService;
+        private readonly IMediator _mediator;
 
-        public CategoriesController(ILogger<CategoriesController> logger, ICategoryService categoryService)
+        public CategoriesController(
+            ILogger<CategoriesController> logger,
+            ICategoryService categoryService,
+            IMediator mediator)
         {
-            this._logger = logger;
+            _logger = logger;
             _categoryService = categoryService;
+            _mediator = mediator;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<CategoryDto>>> GetAll()
         {
-            var result = await _categoryService.GetAll();
-            if (result.Success)
-            {
-                return Ok(result.Data);
-            }
-            else
-            {
-                return StatusCode(result.Error.StatusCode, result.Error);
-            }
+            return await _mediator.Send(new GetCategoryListQuery());
         }
 
         [HttpGet("{id}")]
@@ -52,15 +53,7 @@
         [HttpPost]
         public async Task<ActionResult<CategoryDto>> Create([FromBody] CategoryCreateRequestDto category)
         {
-            var result = await _categoryService.Create(category);
-            if (result.Success)
-            {
-                return StatusCode(201, result.Data);
-            }
-            else
-            {
-                return StatusCode(result.Error.StatusCode, result.Error);
-            }
+            return await _mediator.Send(category.Adapt<CreateCategoryCommand>());
         }
 
         [HttpPut]

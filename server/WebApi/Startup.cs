@@ -1,5 +1,6 @@
 namespace WebApi
 {
+    using Application;
     using Application.Interfaces;
     using Application.Services;
     using Domain.Repository;
@@ -36,10 +37,9 @@ namespace WebApi
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApi", Version = "v1" });
             });
             services.AddScoped(typeof(IAsyncRepository<>), typeof(BaseAsyncRepository<>));
-
+            services.AddApplication();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ICategoryService, CategoryService>();
-
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IProductRepository, ProductRepository>();
         }
