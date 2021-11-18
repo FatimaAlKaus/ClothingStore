@@ -13,7 +13,7 @@ export const ProductCard: React.FC<ProductProps> = props => {
   return (
     <ThemeProvider theme={theme}>
       <Card className={classes.root}>
-        <CardMedia component="img" image={props.imgPath} />
+        <CardMedia width="300" height="400" component="img" image={props.imgPath} />
         <CardContent>
           <Typography variant="h5">{props.name}</Typography>
           <Typography variant="inherit">{props.price} Руб</Typography>
