@@ -32,6 +32,12 @@ const App: React.FC = () => {
         imgPath: 'https://static1.boscooutlet.ru/upload/iblock/2b0/2b0e94659c2b1bed9ab698447123aab4_1221_1607.jpg',
         price: 5200,
       },
+      {
+        id: 5,
+        name: 'Панама',
+        imgPath: 'https://www.bosco.ru/upload/iblock/195/19502f3d56a97e4724e2ef8f026041fe.jpg',
+        price: 500,
+      },
     ],
   };
   return (
