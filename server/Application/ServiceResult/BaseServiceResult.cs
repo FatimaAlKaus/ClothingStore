@@ -5,7 +5,7 @@
 
     public class BaseServiceResult : IServiceResult
     {
-        public bool Success { get; set; }
+        public bool Success { get; set; } = true;
 
         public ApiError Error { get; set; }
     }

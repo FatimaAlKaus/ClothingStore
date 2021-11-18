@@ -30,23 +30,21 @@
             try
             {
                 result.Data = (await _repository.Add(category.Adapt<Category>())).Adapt<CategoryDto>();
-                result.Success = true;
-                return result;
             }
             catch (DbUpdateException)
             {
                 result.Error = ApiError.Conflict("Name", nameof(Category), category.Name);
 
                 result.Success = false;
-                return result;
             }
             catch (Exception)
             {
                 result.Error = ApiError.InternalServerError("Failed to create new category");
 
                 result.Success = false;
-                return result;
             }
+
+            return result;
         }
 
         public async Task<BaseServiceResult<List<CategoryDto>>> GetAll()
@@ -56,16 +54,14 @@
             try
             {
                 result.Data = (await _repository.GetAll()).Select(x => x.Adapt<CategoryDto>()).ToList();
-                result.Success = true;
-
-                return result;
             }
             catch (Exception)
             {
                 result.Error = ApiError.InternalServerError("Failed to get list of categories");
                 result.Success = false;
-                return result;
             }
+
+            return result;
         }
 
         public async Task<BaseServiceResult<CategoryDto>> GetById(int id)
@@ -83,16 +79,14 @@
                 }
 
                 result.Data = dto;
-                result.Success = true;
-
-                return result;
             }
             catch (Exception)
             {
                 result.Error = ApiError.InternalServerError("Failed to get category by id");
                 result.Success = false;
-                return result;
             }
+
+            return result;
         }
 
         public async Task<BaseServiceResult<CategoryDto>> Update(CategoryUpdateRequestDto category)
@@ -114,23 +108,21 @@
 
                 await _repository.Update();
                 result.Data = model.Adapt<Category>().Adapt<CategoryDto>();
-                result.Success = true;
-                return result;
             }
             catch (DbUpdateException)
             {
                 result.Error = ApiError.Conflict("Name", nameof(Category), category.Name);
 
                 result.Success = false;
-                return result;
             }
             catch (Exception)
             {
                 result.Error = ApiError.InternalServerError("Failed to update category");
 
                 result.Success = false;
-                return result;
             }
+
+            return result;
         }
 
         public async Task<BaseServiceResult> Delete(int id)
@@ -148,15 +140,15 @@
 
                 await _repository.Remove(model);
                 result.Success = true;
-                return result;
             }
             catch (Exception)
             {
                 result.Error = ApiError.InternalServerError("Failed to delete category");
 
                 result.Success = false;
-                return result;
             }
+
+            return result;
         }
     }
 }
