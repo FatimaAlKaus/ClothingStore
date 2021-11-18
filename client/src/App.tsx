@@ -35,7 +35,7 @@ const App: React.FC = () => {
     ],
   };
   return (
-    <div style={{ backgroundColor: '#FFEFEF' }} className="App">
+    <div className="App">
       <ProductList items={list.items} />
     </div>
   );
