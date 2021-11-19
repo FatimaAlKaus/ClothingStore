@@ -8,4 +8,9 @@
 
         ApiError Error { get; set; }
     }
+
+    public interface IServiceResult<T> : IServiceResult
+    {
+        T Data { get; set; }
+    }
 }

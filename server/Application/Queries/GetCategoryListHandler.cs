@@ -1,4 +1,4 @@
-﻿namespace Application.UseCases.Category.Queries
+﻿namespace Application.Queries
 {
     using System.Collections.Generic;
     using System.Linq;

@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using Application.Commands.CreateCategory;
     using Application.DTO.Request;
     using Application.DTO.Response;
     using Application.Error;
@@ -23,13 +24,15 @@
             _repository = repository;
         }
 
-        public async Task<BaseServiceResult<CategoryDto>> Create(CategoryCreateRequestDto category)
+        public async Task<BaseServiceResult<CategoryDto>> Create(CreateCategoryCommand category)
         {
             var result = new BaseServiceResult<CategoryDto>();
 
             try
             {
-                result.Data = (await _repository.Add(category.Adapt<Category>())).Adapt<CategoryDto>();
+                var model = category.Adapt<Category>();
+                model.CreatedDate = model.ModifiedDate = DateTimeOffset.Now;
+                result.Data = (await _repository.Add(model)).Adapt<CategoryDto>();
                 result.Success = true;
                 return result;
             }

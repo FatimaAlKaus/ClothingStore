@@ -2,7 +2,7 @@
 {
     using Application.Interfaces;
 
-    public class BaseServiceResult<TData> : BaseServiceResult, IServiceResult
+    public class BaseServiceResult<TData> : BaseServiceResult, IServiceResult<TData>
         where TData : class
     {
         public BaseServiceResult()

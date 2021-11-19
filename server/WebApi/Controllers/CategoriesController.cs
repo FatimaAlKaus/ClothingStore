@@ -2,11 +2,12 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using Application.Commands.CreateCategory;
+    using Application.Commands.DeleteCategory;
     using Application.DTO.Request;
     using Application.DTO.Response;
     using Application.Interfaces;
-    using Application.UseCases.Category.Commands.CreateCategory;
-    using Application.UseCases.Category.Queries;
+    using Application.Queries;
     using Mapster;
     using MediatR;
     using Microsoft.AspNetCore.Mvc;
@@ -44,16 +45,20 @@
             {
                 return Ok(result.Data);
             }
-            else
-            {
-                return StatusCode(result.Error.StatusCode, result.Error);
-            }
+
+            return StatusCode(result.Error.StatusCode, result.Error);
         }
 
         [HttpPost]
         public async Task<ActionResult<CategoryDto>> Create([FromBody] CategoryCreateRequestDto category)
         {
-            return await _mediator.Send(category.Adapt<CreateCategoryCommand>());
+            var result = await _mediator.Send(category.Adapt<CreateCategoryCommand>());
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+
+            return StatusCode(result.Error.StatusCode, result.Error);
         }
 
         [HttpPut]
@@ -73,7 +78,7 @@
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            var result = await _categoryService.Delete(id);
+            var result = await _mediator.Send(new DeleteCategoryCommand { Id = id });
             if (result.Success)
             {
                 return NoContent();
