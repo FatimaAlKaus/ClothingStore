@@ -1,4 +1,4 @@
-﻿namespace Application.Commands.CreateCategory
+﻿namespace Application.Commands.Category.CreateCategory
 {
     using Application.DTO.Response;
     using Application.Interfaces;

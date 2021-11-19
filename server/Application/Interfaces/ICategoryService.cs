@@ -2,8 +2,8 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using Application.Commands.CreateCategory;
-    using Application.DTO.Request;
+    using Application.Commands.Category.CreateCategory;
+    using Application.Commands.Category.UpdateCategory;
     using Application.DTO.Response;
     using Application.ServiceResult;
 
@@ -15,7 +15,7 @@
 
         Task<BaseServiceResult<CategoryDto>> Create(CreateCategoryCommand category);
 
-        Task<BaseServiceResult<CategoryDto>> Update(CategoryUpdateRequestDto category);
+        Task<BaseServiceResult<CategoryDto>> Update(UpdateCategoryCommand category);
 
         Task<BaseServiceResult> Delete(int id);
     }

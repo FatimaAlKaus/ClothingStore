@@ -1,13 +1,11 @@
 ﻿namespace Application.Interfaces
 {
-    using System.Collections.Generic;
-    using Application.DTO.Request;
+    using System.Threading.Tasks;
+    using Application.Commands.Product.CreateProduct;
     using Application.DTO.Response;
 
     public interface IProductService
     {
-        List<ProductDto> GetProducts();
-
-        ProductDto InsetProduct(ProductCreateRequestDto product);
+        Task<IServiceResult<ProductDto>> CreateProduct(CreateProductCommand product);
     }
 }

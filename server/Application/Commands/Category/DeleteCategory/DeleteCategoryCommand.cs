@@ -1,4 +1,4 @@
-﻿namespace Application.Commands.DeleteCategory
+﻿namespace Application.Commands.Category.DeleteCategory
 {
     using Application.Interfaces;
     using MediatR;

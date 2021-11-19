@@ -2,9 +2,9 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using Application.Commands.CreateCategory;
-    using Application.Commands.DeleteCategory;
-    using Application.DTO.Request;
+    using Application.Commands.Category.CreateCategory;
+    using Application.Commands.Category.DeleteCategory;
+    using Application.Commands.Category.UpdateCategory;
     using Application.DTO.Response;
     using Application.Interfaces;
     using Application.Queries;
@@ -12,6 +12,7 @@
     using MediatR;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
+    using WebApi.Request;
 
     [ApiController]
     [Route("api/[controller]")]
@@ -64,7 +65,7 @@
         [HttpPut]
         public async Task<ActionResult<CategoryDto>> Update([FromBody] CategoryUpdateRequestDto category)
         {
-            var result = await _categoryService.Update(category);
+            var result = await _mediator.Send(new UpdateCategoryCommand { Id = category.Id, Name = category.Name });
             if (result.Success)
             {
                 return Ok(result.Data);

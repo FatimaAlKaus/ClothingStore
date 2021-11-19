@@ -4,8 +4,8 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using Application.Commands.CreateCategory;
-    using Application.DTO.Request;
+    using Application.Commands.Category.CreateCategory;
+    using Application.Commands.Category.UpdateCategory;
     using Application.DTO.Response;
     using Application.Error;
     using Application.Interfaces;
@@ -98,7 +98,7 @@
             }
         }
 
-        public async Task<BaseServiceResult<CategoryDto>> Update(CategoryUpdateRequestDto category)
+        public async Task<BaseServiceResult<CategoryDto>> Update(UpdateCategoryCommand category)
         {
             var result = new BaseServiceResult<CategoryDto>();
             try
@@ -116,7 +116,7 @@
                 model.ModifiedDate = DateTimeOffset.Now;
 
                 await _repository.Update();
-                result.Data = model.Adapt<Category>().Adapt<CategoryDto>();
+                result.Data = model.Adapt<CategoryDto>();
                 result.Success = true;
                 return result;
             }

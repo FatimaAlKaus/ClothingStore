@@ -1,4 +1,4 @@
-﻿namespace Application.Commands.DeleteCategory
+﻿namespace Application.Commands.Category.DeleteCategory
 {
     using System.Threading;
     using System.Threading.Tasks;

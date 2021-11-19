@@ -1,30 +1,14 @@
 ﻿namespace Infrastructure.Repository
 {
-    using System.Linq;
     using Domain.Models;
     using Domain.Repository;
     using Infrastructure.EF;
-    using Microsoft.EntityFrameworkCore;
 
-    public class ProductRepository : IProductRepository
+    public class ProductRepository : BaseAsyncRepository<Product>, IProductRepository
     {
-        private DatabaseContext context;
-
         public ProductRepository(DatabaseContext context)
+            : base(context)
         {
-            this.context = context;
-        }
-
-        public Product InsertProduct(Product product)
-        {
-            var entity = context.Add(product);
-            context.SaveChanges();
-            return entity.Entity;
-        }
-
-        IQueryable<Product> IProductRepository.GetProducts()
-        {
-            return context.Products.AsNoTracking();
         }
     }
 }

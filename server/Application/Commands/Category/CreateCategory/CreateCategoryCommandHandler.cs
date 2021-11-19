@@ -1,4 +1,4 @@
-﻿namespace Application.Commands.CreateCategory
+﻿namespace Application.Commands.Category.CreateCategory
 {
     using System.Threading;
     using System.Threading.Tasks;

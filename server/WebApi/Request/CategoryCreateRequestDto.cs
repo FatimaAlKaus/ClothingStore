@@ -1,4 +1,4 @@
-﻿namespace Application.DTO.Request
+﻿namespace WebApi.Request
 {
     using System.ComponentModel.DataAnnotations;
 
