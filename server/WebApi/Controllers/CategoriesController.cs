@@ -7,7 +7,7 @@
     using Application.Commands.Category.UpdateCategory;
     using Application.DTO.Response;
     using Application.Interfaces;
-    using Application.Queries;
+    using Application.Queries.Category;
     using Mapster;
     using MediatR;
     using Microsoft.AspNetCore.Mvc;

@@ -5,6 +5,7 @@
     using Application.Commands.Product.CreateProduct;
     using Application.DTO.Response;
     using Application.Interfaces;
+    using Application.Queries.Product;
     using Mapster;
     using MediatR;
     using Microsoft.AspNetCore.Mvc;
@@ -27,9 +28,9 @@
         }
 
         [HttpGet]
-        public ActionResult<List<ProductDto>> Get()
+        public async Task<ActionResult<List<ProductDto>>> GetAll()
         {
-            return Ok();
+            return await _mediator.Send(new GetProductListQuery());
         }
 
         [HttpPost]
