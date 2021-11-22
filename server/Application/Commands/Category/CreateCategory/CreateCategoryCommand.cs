@@ -1,10 +1,10 @@
 ﻿namespace Application.Commands.Category.CreateCategory
 {
+    using Application.ApiResponse;
     using Application.DTO.Response;
-    using Application.Interfaces;
     using MediatR;
 
-    public class CreateCategoryCommand : IRequest<IServiceResult<CategoryDto>>
+    public class CreateCategoryCommand : IRequest<ApiResponse<CategoryDto>>
     {
         public string Name { get; set; }
     }

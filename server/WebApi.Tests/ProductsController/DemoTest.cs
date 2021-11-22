@@ -1,6 +1,7 @@
 ﻿namespace WebApi.Tests.ProductsController
 {
     using System.Collections.Generic;
+    using System.Threading.Tasks;
     using Application.DTO.Response;
     using Infrastructure.EF;
     using Microsoft.AspNetCore.Mvc;
@@ -13,7 +14,7 @@
     public class DemoTest : BaseTest
     {
         [Fact]
-        public void TestCase()
+        public async Task TestCase()
         {
             // Arrange
             IDatabaseInitializer databaseInitializer = TestDataFactory.CreateDatabaseInitializer();
@@ -27,8 +28,8 @@
             Controllers.ProductsController productsController = controllerFactory.CreateProductsController();
 
             // Act
-            var result = productsController.Get();
-            var successResult = result.Result as OkObjectResult;
+            var result = productsController.GetAll();
+            var successResult = (await result).Result as OkObjectResult;
             var listOfProducts = successResult.Value as List<ProductDto>;
 
             // Assert

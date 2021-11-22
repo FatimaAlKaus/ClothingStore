@@ -34,7 +34,7 @@
         }
 
         [HttpPost]
-        public async Task<ActionResult<ProductDto>> Create([FromBody] ProductCreateRequestDto product)
+        public async Task<ActionResult<ProductDto>> Create([FromBody] ProductCreateRequest product)
         {
             var result = await _mediator.Send(product.Adapt<CreateProductCommand>());
             if (result.Success)
@@ -42,7 +42,7 @@
                 return Ok(result.Data);
             }
 
-            return StatusCode(result.Error.StatusCode, result.Error);
+            return StatusCode((int)result.Error.StatusCode, result.Error);
         }
     }
 }

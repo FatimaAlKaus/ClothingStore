@@ -2,11 +2,12 @@
 {
     using System.Threading;
     using System.Threading.Tasks;
+    using Application.ApiResponse;
     using Application.DTO.Response;
     using Application.Interfaces;
     using MediatR;
 
-    public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryCommand, IServiceResult<CategoryDto>>
+    public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryCommand, ApiResponse<CategoryDto>>
     {
         private readonly ICategoryService _categoryService;
 
@@ -19,7 +20,7 @@
 
         public string Name { get; set; }
 
-        public async Task<IServiceResult<CategoryDto>> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
+        public async Task<ApiResponse<CategoryDto>> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
         {
             return await _categoryService.Update(request);
         }

@@ -1,10 +1,10 @@
 ﻿namespace Application.Commands.Product.CreateProduct
 {
+    using Application.ApiResponse;
     using Application.DTO.Response;
-    using Application.Interfaces;
     using MediatR;
 
-    public class CreateProductCommand : IRequest<IServiceResult<ProductDto>>
+    public class CreateProductCommand : IRequest<ApiResponse<ProductDto>>
     {
         public string Name { get; set; }
     }

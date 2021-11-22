@@ -2,7 +2,7 @@
 {
     using System.ComponentModel.DataAnnotations;
 
-    public class ProductCreateRequestDto
+    public class ProductCreateRequest
     {
         [Required(AllowEmptyStrings = false)]
         [MinLength(2)]

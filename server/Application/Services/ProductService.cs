@@ -2,11 +2,10 @@
 {
     using System;
     using System.Threading.Tasks;
+    using Application.ApiResponse;
     using Application.Commands.Product.CreateProduct;
     using Application.DTO.Response;
-    using Application.Error;
     using Application.Interfaces;
-    using Application.ServiceResult;
     using Domain.Models;
     using Domain.Repository;
     using Mapster;
@@ -21,9 +20,9 @@
             _productRepository = productRepository;
         }
 
-        public async Task<IServiceResult<ProductDto>> CreateProduct(CreateProductCommand product)
+        public async Task<ApiResponse<ProductDto>> CreateProduct(CreateProductCommand product)
         {
-            var result = new BaseServiceResult<ProductDto>();
+            var result = new ApiResponse<ProductDto>();
 
             try
             {

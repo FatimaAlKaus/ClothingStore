@@ -1,22 +1,17 @@
 ﻿namespace Application.Interfaces
 {
-    using System.Collections.Generic;
     using System.Threading.Tasks;
+    using Application.ApiResponse;
     using Application.Commands.Category.CreateCategory;
     using Application.Commands.Category.UpdateCategory;
     using Application.DTO.Response;
-    using Application.ServiceResult;
 
     public interface ICategoryService
     {
-        Task<BaseServiceResult<CategoryDto>> GetById(int id);
+        Task<ApiResponse<CategoryDto>> Create(CreateCategoryCommand category);
 
-        Task<BaseServiceResult<List<CategoryDto>>> GetAll();
+        Task<ApiResponse<CategoryDto>> Update(UpdateCategoryCommand category);
 
-        Task<BaseServiceResult<CategoryDto>> Create(CreateCategoryCommand category);
-
-        Task<BaseServiceResult<CategoryDto>> Update(UpdateCategoryCommand category);
-
-        Task<BaseServiceResult> Delete(int id);
+        Task<ApiResponse> Delete(int id);
     }
 }

@@ -1,9 +1,11 @@
 ﻿namespace Application.Queries.Category
 {
-    using System.Collections.Generic;
     using Application.ApiResponse;
     using Application.DTO.Response;
     using MediatR;
 
-    public record GetCategoryListQuery : IRequest<ApiResponse<List<CategoryDto>>>;
+    public record GetCategoryByIdQuery : IRequest<ApiResponse<CategoryDto>>
+    {
+        public int Id { get; set; }
+    }
 }

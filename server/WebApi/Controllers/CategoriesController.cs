@@ -35,59 +35,31 @@
         [HttpGet]
         public async Task<ActionResult<List<CategoryDto>>> GetAll()
         {
-            return await _mediator.Send(new GetCategoryListQuery());
+            return this.Handle(await _mediator.Send(new GetCategoryListQuery()), System.Net.HttpStatusCode.OK);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<CategoryDto>> Get(int id)
         {
-            var result = await _categoryService.GetById(id);
-            if (result.Success)
-            {
-                return Ok(result.Data);
-            }
-
-            return StatusCode(result.Error.StatusCode, result.Error);
+            return this.Handle(await _mediator.Send(new GetCategoryByIdQuery() { Id = id }), System.Net.HttpStatusCode.OK);
         }
 
         [HttpPost]
-        public async Task<ActionResult<CategoryDto>> Create([FromBody] CategoryCreateRequestDto category)
+        public async Task<ActionResult<CategoryDto>> Create([FromBody] CategoryCreateRequest category)
         {
-            var result = await _mediator.Send(category.Adapt<CreateCategoryCommand>());
-            if (result.Success)
-            {
-                return Ok(result.Data);
-            }
-
-            return StatusCode(result.Error.StatusCode, result.Error);
+            return this.Handle(await _mediator.Send(category.Adapt<CreateCategoryCommand>()), System.Net.HttpStatusCode.Created);
         }
 
         [HttpPut]
-        public async Task<ActionResult<CategoryDto>> Update([FromBody] CategoryUpdateRequestDto category)
+        public async Task<ActionResult<CategoryDto>> Update([FromBody] CategoryUpdateRequest category)
         {
-            var result = await _mediator.Send(new UpdateCategoryCommand { Id = category.Id, Name = category.Name });
-            if (result.Success)
-            {
-                return Ok(result.Data);
-            }
-            else
-            {
-                return StatusCode(result.Error.StatusCode, result.Error);
-            }
+            return this.Handle(await _mediator.Send(new UpdateCategoryCommand { Id = category.Id, Name = category.Name }), System.Net.HttpStatusCode.OK);
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            var result = await _mediator.Send(new DeleteCategoryCommand { Id = id });
-            if (result.Success)
-            {
-                return NoContent();
-            }
-            else
-            {
-                return StatusCode(result.Error.StatusCode, result.Error);
-            }
+            return this.Handle(await _mediator.Send(new DeleteCategoryCommand { Id = id }));
         }
     }
 }
