@@ -26,4 +26,8 @@
     <ProjectReference Include="..\WebAPI.MockFactory.Tests\WebAPI.MockFactory.Tests.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ProductsController\" />
+  </ItemGroup>
+
 </Project>
