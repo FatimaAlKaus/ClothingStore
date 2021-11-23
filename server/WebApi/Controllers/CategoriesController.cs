@@ -35,25 +35,25 @@
         [HttpGet]
         public async Task<ActionResult<List<CategoryDto>>> GetAll()
         {
-            return this.Handle(await _mediator.Send(new GetCategoryListQuery()), System.Net.HttpStatusCode.OK);
+            return this.Handle(await _mediator.Send(new GetCategoryListQuery()), successStatusCode: System.Net.HttpStatusCode.OK);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<CategoryDto>> Get(int id)
         {
-            return this.Handle(await _mediator.Send(new GetCategoryByIdQuery() { Id = id }), System.Net.HttpStatusCode.OK);
+            return this.Handle(await _mediator.Send(new GetCategoryByIdQuery() { Id = id }), successStatusCode: System.Net.HttpStatusCode.OK);
         }
 
         [HttpPost]
         public async Task<ActionResult<CategoryDto>> Create([FromBody] CategoryCreateRequest category)
         {
-            return this.Handle(await _mediator.Send(category.Adapt<CreateCategoryCommand>()), System.Net.HttpStatusCode.Created);
+            return this.Handle(await _mediator.Send(category.Adapt<CreateCategoryCommand>()), successStatusCode: System.Net.HttpStatusCode.Created);
         }
 
         [HttpPut]
         public async Task<ActionResult<CategoryDto>> Update([FromBody] CategoryUpdateRequest category)
         {
-            return this.Handle(await _mediator.Send(new UpdateCategoryCommand { Id = category.Id, Name = category.Name }), System.Net.HttpStatusCode.OK);
+            return this.Handle(await _mediator.Send(new UpdateCategoryCommand { Id = category.Id, Name = category.Name }), successStatusCode: System.Net.HttpStatusCode.OK);
         }
 
         [HttpDelete("{id}")]
