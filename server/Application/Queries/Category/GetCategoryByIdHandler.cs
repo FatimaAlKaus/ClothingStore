@@ -8,7 +8,7 @@
     using Mapster;
     using MediatR;
 
-    public record GetCategoryByIdHandler : IRequestHandler<GetCategoryByIdQuery, ApiResponse<CategoryDto>>
+    public class GetCategoryByIdHandler : IRequestHandler<GetCategoryByIdQuery, ApiResponse<CategoryDto>>
     {
         private readonly ICategoryRepository _categoryRepository;
 
@@ -22,7 +22,7 @@
             var model = await _categoryRepository.GetById(request.Id);
             if (model is null)
             {
-                return ApiError.NotFound(nameof(model), request.Id);
+                return ApiError.NotFound(nameof(Domain.Models.Category), request.Id);
             }
 
             return model.Adapt<CategoryDto>();
