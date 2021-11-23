@@ -19,17 +19,9 @@
             return await Context.Products.Include(x => x.Categories).ToListAsync();
         }
 
-        public override async Task<Product> Update(Product entity)
+        public override async Task<Product> GetById(int id)
         {
-            Context.Entry(await Context.Products.FirstOrDefaultAsync(x => x.Id == entity.Id)).State = EntityState.Detached;
-            Context.Entry(entity).State = EntityState.Modified;
-
-            await Context.SaveChangesAsync();
-
-            return await Context.Products
-                .Include(x => x.Categories)
-                .AsNoTrackingWithIdentityResolution()
-                .FirstOrDefaultAsync(x => x.Id == entity.Id);
+            return await Context.Products.Include(x => x.Categories).FirstOrDefaultAsync(x => x.Id == id);
         }
     }
 }

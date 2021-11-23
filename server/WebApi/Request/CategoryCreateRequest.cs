@@ -1,15 +1,13 @@
-﻿namespace Application.DTO.Request
+﻿namespace WebApi.Request
 {
     using System.ComponentModel.DataAnnotations;
 
-    public class CategoryUpdateRequestDto
+    public class CategoryCreateRequest
     {
-        [Required]
-        public int Id { get; init; }
-
         [Required(AllowEmptyStrings = false)]
         [MinLength(2)]
         [MaxLength(50)]
+
         public string Name { get; init; }
     }
 }

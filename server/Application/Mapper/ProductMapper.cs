@@ -1,7 +1,7 @@
 ﻿namespace Application.Mapper
 {
     using System.Linq;
-    using Application.DTO.Request;
+    using Application.Commands.Product.CreateProduct;
     using Application.DTO.Response;
     using Domain.Models;
     using Mapster;
@@ -21,7 +21,7 @@
             };
         }
 
-        public static Product AdaptToMapDto(this ProductCreateRequestDto product)
+        public static Product AdaptToMapDto(this CreateProductCommand product)
         {
             return product == null ? null : new Product()
             {

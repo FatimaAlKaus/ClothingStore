@@ -1,9 +1,11 @@
 ﻿namespace Application.Services
 {
+    using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
-    using Application.DTO.Request;
+    using Application.ApiResponse;
+    using Application.Commands.Product.CreateProduct;
+    using Application.Commands.Product.UpdateProduct;
     using Application.DTO.Response;
     using Application.Interfaces;
     using Domain.Models;
@@ -21,41 +23,72 @@
             _categoryRepository = categoryRepository;
         }
 
-        public async Task<ProductDto> Create(ProductCreateRequestDto product)
+        public async Task<ApiResponse<ProductDto>> Create(CreateProductCommand product)
         {
-            var model = product.Adapt<Product>();
-            var categories = (await _categoryRepository.GetAll()).Where(x => product.Categories.Contains(x.Id));
-            model.Categories = categories.ToList();
-            return (await _productRepository.Add(model)).Adapt<ProductDto>();
+            try
+            {
+                var model = product.Adapt<Product>();
+                model.CreatedDate = model.ModifiedDate = DateTimeOffset.Now;
+                model.Categories = new List<Category>();
+                foreach (var index in product.Categories)
+                {
+                    var category = await _categoryRepository.GetById(index);
+                    if (category is null)
+                    {
+                        return ApiError.NotFound(nameof(Category), index);
+                    }
+
+                    model.Categories.Add(category);
+                }
+
+                return (await _productRepository.Add(model)).Adapt<ProductDto>();
+            }
+            catch (Exception)
+            {
+                return ApiError.InternalServerError("Failed to create new product");
+            }
         }
 
-        public async Task Delete(int id)
+        public async Task<ApiResponse> Delete(int id)
         {
-            await _productRepository.Remove(await _productRepository.GetById(id));
+            try
+            {
+                var model = await _productRepository.GetById(id);
+                if (model is null)
+                {
+                    return ApiError.NotFound(nameof(Product), id);
+                }
+
+                await _productRepository.Remove(model);
+                return new ApiResponse() { Success = true };
+            }
+            catch (Exception)
+            {
+                return ApiError.InternalServerError("Failed to delete product");
+            }
         }
 
-        public async Task<List<ProductDto>> GetAll()
+        public async Task<ApiResponse<ProductDto>> Update(UpdateProductCommand product)
         {
-            return (await _productRepository.GetAll()).Select(x => x.Adapt<ProductDto>()).ToList();
-        }
+            try
+            {
+                var model = await _productRepository.GetById(product.Id);
+                if (model is null)
+                {
+                    return ApiError.NotFound(nameof(Product), product.Id);
+                }
 
-        public async Task<ProductDto> GetById(int id)
-        {
-            return (await _productRepository.GetById(id)).Adapt<ProductDto>();
-        }
+                model.Name = product.Name;
+                model.Price = product.Price;
+                model.ModifiedDate = DateTimeOffset.Now;
 
-        public async Task<ProductDto> Update(ProductUpdateRequestDto product)
-        {
-            return (await _productRepository.Update(product.Adapt<Product>())).Adapt<ProductDto>();
-        }
-
-        public async Task<ProductDto> AddCategories(int productId, int[] categoryIds)
-        {
-            var product = await _productRepository.GetById(productId);
-            var categories = (await _categoryRepository.GetAll()).Where(x => categoryIds.Contains(x.Id)).ToList();
-            product.Categories ??= new List<Category>();
-            categories.ForEach(x => product.Categories.Add(x));
-            return (await _productRepository.Update(product)).Adapt<ProductDto>();
+                await _productRepository.Update();
+                return model.Adapt<ProductDto>();
+            }
+            catch (Exception)
+            {
+                return ApiError.InternalServerError("Faield to update product");
+            }
         }
     }
 }

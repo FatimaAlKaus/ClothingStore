@@ -1,22 +1,17 @@
 ﻿namespace Application.Interfaces
 {
-    using System.Collections.Generic;
     using System.Threading.Tasks;
-    using Application.DTO.Request;
+    using Application.ApiResponse;
+    using Application.Commands.Product.CreateProduct;
+    using Application.Commands.Product.UpdateProduct;
     using Application.DTO.Response;
 
     public interface IProductService
     {
-        Task<ProductDto> GetById(int id);
+        Task<ApiResponse<ProductDto>> Create(CreateProductCommand product);
 
-        Task<List<ProductDto>> GetAll();
+        Task<ApiResponse<ProductDto>> Update(UpdateProductCommand product);
 
-        Task<ProductDto> Create(ProductCreateRequestDto product);
-
-        Task<ProductDto> Update(ProductUpdateRequestDto product);
-
-        Task Delete(int id);
-
-        Task<ProductDto> AddCategories(int productId, int[] categoryIds);
+        Task<ApiResponse> Delete(int id);
     }
 }

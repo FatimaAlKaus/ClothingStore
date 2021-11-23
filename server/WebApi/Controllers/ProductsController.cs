@@ -2,83 +2,58 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using Application.DTO.Request;
+    using Application.Commands.Product.CreateProduct;
+    using Application.Commands.Product.DeleteProduct;
+    using Application.Commands.Product.UpdateProduct;
     using Application.DTO.Response;
-    using Application.Interfaces;
+    using Application.Queries.Product;
+    using Mapster;
+    using MediatR;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
+    using WebApi.Request;
 
     [ApiController]
     [Route("api/[controller]")]
     public class ProductsController : ControllerBase
     {
-        private readonly ILogger<ProductsController> logger;
-        private readonly IProductService _productService;
+        private readonly ILogger<ProductsController> _logger;
+        private readonly IMediator _mediator;
 
-        public ProductsController(ILogger<ProductsController> logger, IProductService productService)
+        public ProductsController(ILogger<ProductsController> logger, IMediator mediator)
         {
-            this.logger = logger;
-            _productService = productService;
+            _logger = logger;
+            _mediator = mediator;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<ProductDto>>> GetAll()
         {
-            return Ok(await _productService.GetAll());
+            return await _mediator.Send(new GetProductListQuery());
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ProductDto>> Get(int id)
+        public async Task<ActionResult<ProductDto>> GetById(int id)
         {
-            var productDto = await _productService.GetById(id);
-            if (productDto is null)
-            {
-                return NotFound("Product with this Id was not found");
-            }
-
-            return Ok(productDto);
+            return this.Handle(await _mediator.Send(new GetProductByIdQuery() { Id = id }), System.Net.HttpStatusCode.OK);
         }
 
         [HttpPost]
-        public async Task<ActionResult<ProductDto>> Create([FromBody] ProductCreateRequestDto product)
+        public async Task<ActionResult<ProductDto>> Create([FromBody] ProductCreateRequest product)
         {
-            var productDto = await _productService.Create(product);
-            string uri = Request.Path.Value + "/" + productDto.Id;
-            return Created(uri, productDto);
-        }
-
-        [HttpPut]
-        public async Task<ActionResult<ProductDto>> Update([FromBody] ProductUpdateRequestDto product)
-        {
-            if (await _productService.GetById(product.Id) is null)
-            {
-                return NotFound("Product with this Id was not found");
-            }
-
-            return Ok(await _productService.Update(product));
+            return this.Handle(await _mediator.Send(product.Adapt<CreateProductCommand>()), System.Net.HttpStatusCode.Created);
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            if (await _productService.GetById(id) is null)
-            {
-                return NotFound("Product with this Id was not found");
-            }
-
-            await _productService.Delete(id);
-            return NoContent();
+            return this.Handle(await _mediator.Send(new DeleteProductCommand() { Id = id }));
         }
 
-        [HttpPatch("{id}")]
-        public async Task<ActionResult<ProductDto>> AddCategories(int id, int[] categoryIds)
+        [HttpPut]
+        public async Task<ActionResult<ProductDto>> Update([FromBody] ProductUpdateRequest product)
         {
-            if (await _productService.GetById(id) is null)
-            {
-                return NotFound("Product with this Id was not found");
-            }
-
-            return Ok(await _productService.AddCategories(id, categoryIds));
+            return this.Handle(await _mediator.Send(product.Adapt<UpdateProductCommand>()), System.Net.HttpStatusCode.OK);
         }
     }
 }

@@ -1,8 +1,8 @@
-﻿namespace Application.DTO.Request
+﻿namespace WebApi.Request
 {
     using System.ComponentModel.DataAnnotations;
 
-    public class ProductUpdateRequestDto
+    public class CategoryUpdateRequest
     {
         [Required]
         public int Id { get; init; }
@@ -11,9 +11,5 @@
         [MinLength(2)]
         [MaxLength(50)]
         public string Name { get; init; }
-
-        [Required]
-        [Range(20, int.MaxValue)]
-        public int Price { get; init; }
     }
 }

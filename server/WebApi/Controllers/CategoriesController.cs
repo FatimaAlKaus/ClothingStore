@@ -1,13 +1,18 @@
 ﻿namespace WebApi.Controllers
 {
     using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
-    using Application.DTO.Request;
+    using Application.Commands.Category.CreateCategory;
+    using Application.Commands.Category.DeleteCategory;
+    using Application.Commands.Category.UpdateCategory;
     using Application.DTO.Response;
     using Application.Interfaces;
+    using Application.Queries.Category;
+    using Mapster;
+    using MediatR;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
+    using WebApi.Request;
 
     [ApiController]
     [Route("api/[controller]")]
@@ -15,70 +20,46 @@
     {
         private readonly ILogger<CategoriesController> _logger;
         private readonly ICategoryService _categoryService;
+        private readonly IMediator _mediator;
 
-        public CategoriesController(ILogger<CategoriesController> logger, ICategoryService categoryService)
+        public CategoriesController(
+            ILogger<CategoriesController> logger,
+            ICategoryService categoryService,
+            IMediator mediator)
         {
-            this._logger = logger;
+            _logger = logger;
             _categoryService = categoryService;
+            _mediator = mediator;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<CategoryDto>>> GetAll()
         {
-            return Ok(await _categoryService.GetAll());
+            return this.Handle(await _mediator.Send(new GetCategoryListQuery()), successStatusCode: System.Net.HttpStatusCode.OK);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<CategoryDto>> Get(int id)
         {
-            var categoryDto = await _categoryService.GetById(id);
-            if (categoryDto is null)
-            {
-                return NotFound("Category with this Id was not found");
-            }
-
-            return Ok(categoryDto);
+            return this.Handle(await _mediator.Send(new GetCategoryByIdQuery() { Id = id }), successStatusCode: System.Net.HttpStatusCode.OK);
         }
 
         [HttpPost]
-        public async Task<ActionResult<CategoryDto>> Create([FromBody] CategoryCreateRequestDto category)
+        public async Task<ActionResult<CategoryDto>> Create([FromBody] CategoryCreateRequest category)
         {
-            if (!(await _categoryService.GetAll()).Any(x => x.Name == category.Name))
-            {
-                var categoryDto = await _categoryService.Create(category);
-                string uri = Request.Path.Value + "/" + categoryDto.Id;
-                return Created(uri, categoryDto);
-            }
-
-            return Conflict("A category with the same name already exists");
+            return this.Handle(await _mediator.Send(category.Adapt<CreateCategoryCommand>()), successStatusCode: System.Net.HttpStatusCode.Created);
         }
 
         [HttpPut]
-        public async Task<ActionResult<CategoryDto>> Update([FromBody] CategoryUpdateRequestDto category)
+        public async Task<ActionResult<CategoryDto>> Update([FromBody] CategoryUpdateRequest category)
         {
-            if (await _categoryService.GetById(category.Id) is null)
-            {
-                return NotFound("Category with this Id was not found");
-            }
-
-            if ((await _categoryService.GetAll()).Any(x => x.Name == category.Name))
-            {
-                return Conflict("A category with the same name already exists");
-            }
-
-            return Ok(await _categoryService.Update(category));
+            return this.Handle(await _mediator.Send(new UpdateCategoryCommand { Id = category.Id, Name = category.Name }), successStatusCode: System.Net.HttpStatusCode.OK);
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            if (await _categoryService.GetById(id) is null)
-            {
-                return NotFound("Category with this Id was not found");
-            }
-
-            await _categoryService.Delete(id);
-            return NoContent();
+            return this.Handle(await _mediator.Send(new DeleteCategoryCommand { Id = id }));
         }
     }
 }
