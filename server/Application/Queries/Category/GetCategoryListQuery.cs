@@ -5,5 +5,7 @@
     using Application.DTO.Response;
     using MediatR;
 
-    public record GetCategoryListQuery : IRequest<ApiResponse<List<CategoryDto>>>;
+    public class GetCategoryListQuery : IRequest<ApiResponse<List<CategoryDto>>>
+    {
+    }
 }

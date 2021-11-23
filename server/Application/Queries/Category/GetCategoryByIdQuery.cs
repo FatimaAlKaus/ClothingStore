@@ -4,7 +4,7 @@
     using Application.DTO.Response;
     using MediatR;
 
-    public record GetCategoryByIdQuery : IRequest<ApiResponse<CategoryDto>>
+    public class GetCategoryByIdQuery : IRequest<ApiResponse<CategoryDto>>
     {
         public int Id { get; set; }
     }

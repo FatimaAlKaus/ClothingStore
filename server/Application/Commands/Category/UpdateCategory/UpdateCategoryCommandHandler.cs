@@ -16,10 +16,6 @@
             _categoryService = categoryService;
         }
 
-        public int Id { get; set; }
-
-        public string Name { get; set; }
-
         public async Task<ApiResponse<CategoryDto>> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
         {
             return await _categoryService.Update(request);
