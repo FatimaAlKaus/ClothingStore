@@ -11,6 +11,8 @@
 
         public decimal Price { get; init; }
 
+        public string ProductImage { get; init; }
+
         public List<CategoryDto> Categories { get; init; }
 
         public DateTimeOffset CreatedDate { get; init; }

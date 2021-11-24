@@ -1,6 +1,7 @@
 ﻿namespace WebApi.Request
 {
     using System.ComponentModel.DataAnnotations;
+    using Microsoft.AspNetCore.Http;
 
     public class ProductCreateRequest
     {
@@ -15,5 +16,8 @@
         [Required]
         [MinLength(1)]
         public int[] Categories { get; set; }
+
+        [DataType(DataType.Upload)]
+        public IFormFile File { get; set; }
     }
 }
