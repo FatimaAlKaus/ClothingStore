@@ -1,3 +1,3 @@
 export const config = {
-  productPhotoFolder: 'D:\\Akvelon\\net-react-template\\server\\WebApi\\StaticFiles\\ProductPhotos',
+  productPhotoFolder: 'http://127.0.0.1:8887/',
 };

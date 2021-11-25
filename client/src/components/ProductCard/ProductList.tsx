@@ -14,7 +14,7 @@ export const ProductList = ({ items }: { items: ProductProps[] }) => (
         key={x.id}
         name={x.name}
         price={x.price}
-        productImage={`${config['productPhotoFolder']}\\${x.productImage}.png`}
+        productImage={`${config['productPhotoFolder']}\\${x.productImage}`}
         id={x.id}
       />
     ))}
