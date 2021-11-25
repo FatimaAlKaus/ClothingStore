@@ -2,16 +2,21 @@ import React from 'react';
 import { Stack } from '@mui/material';
 
 import { ProductArrayProps } from 'src/interfaces/ProductArrayProp';
+import { ProductProps } from 'src/interfaces/ProductProps';
+import { config } from 'src/config';
 
 import { ProductCard } from './ProductCard';
 
-export const ProductList: React.FC<ProductArrayProps> = props => {
-  const { items } = props;
-  return (
-    <Stack flexWrap="wrap" direction="row">
-      {items.map(x => (
-        <ProductCard key={x.id} name={x.name} price={x.price} imgPath={x.imgPath} id={x.id} />
-      ))}
-    </Stack>
-  );
-};
+export const ProductList = ({ items }: { items: ProductProps[] }) => (
+  <Stack flexWrap="wrap" direction="row">
+    {items.map(x => (
+      <ProductCard
+        key={x.id}
+        name={x.name}
+        price={x.price}
+        productImage={`${config['productPhotoFolder']}\\${x.productImage}.png`}
+        id={x.id}
+      />
+    ))}
+  </Stack>
+);
