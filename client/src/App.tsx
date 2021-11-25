@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 
 import './App.css';
-import { ProductList } from './components/ProductCard/ProductList';
-import { requestApi } from './functions/RequestApi';
-import { ProductArrayProps } from './interfaces/ProductArrayProp';
+
 import { ProductProps } from './interfaces/ProductProps';
+import { ProductList } from './components/ProductCard/ProductList';
 
 const App: React.FC = () => {
   const [productCards, setProducts] = useState<ProductProps[]>([]);
@@ -21,7 +20,7 @@ const App: React.FC = () => {
 
   return (
     <div className="App">
-      <ProductList items={productCards} />
+      <ProductList cards={productCards} />
     </div>
   );
 };

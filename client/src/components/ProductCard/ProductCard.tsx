@@ -9,13 +9,13 @@ import { theme } from 'src/theme/StyleTheme';
 import { useStyles } from './ProductCard.styles';
 
 export const ProductCard: React.FC<ProductProps> = props => {
-  const { imgPath, price, name } = props;
+  const { productImage, price, name } = props;
   const classes = useStyles();
   const [isFollow, setFollow] = useState(false);
   return (
     <ThemeProvider theme={theme}>
       <Card className={classes.root}>
-        <CardMedia height="400" component="img" image={imgPath} />
+        <CardMedia height="600" component="img" image={productImage} />
         <CardContent sx={{ height: '70px' }}>
           <Typography variant="h5">{name}</Typography>
           <Typography variant="inherit" sx={{ fontWeight: 'bold' }}>
