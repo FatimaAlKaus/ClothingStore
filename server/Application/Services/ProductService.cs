@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
     using Application.ApiResponse;
     using Application.Commands.Product.CreateProduct;
@@ -43,7 +42,7 @@
             try
             {
                 var model = product.Adapt<Product>();
-                model.ProductImage = Guid.NewGuid().ToString() + "." + product.File.FileName.Split('.').Last();
+                model.ProductImage = Guid.NewGuid().ToString() + "." + product.FileFormat;
                 await _fileManager.SaveFileAsync(file: product.File, path: _configuration["ProductPhotoDirectory"] + model.ProductImage);
                 model.CreatedDate = model.ModifiedDate = DateTimeOffset.Now;
                 model.Categories = new List<Category>();

@@ -3,11 +3,10 @@
     using System.IO;
     using System.Threading;
     using System.Threading.Tasks;
-    using Microsoft.AspNetCore.Http;
 
     public class FileManager
     {
-        public void SaveFile(IFormFile file, string path)
+        public void SaveFile(Stream file, string path)
         {
             using (FileStream stream = new FileStream(path, FileMode.CreateNew))
             {
@@ -15,7 +14,7 @@
             }
         }
 
-        public async Task SaveFileAsync(IFormFile file, string path, CancellationToken cancellationToken = default)
+        public async Task SaveFileAsync(Stream file, string path, CancellationToken cancellationToken = default)
         {
             using (FileStream stream = new FileStream(path, FileMode.CreateNew))
             {

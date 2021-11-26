@@ -1,9 +1,9 @@
 ﻿namespace Application.Commands.Product.CreateProduct
 {
+    using System.IO;
     using Application.ApiResponse;
     using Application.DTO.Response;
     using MediatR;
-    using Microsoft.AspNetCore.Http;
 
     public class CreateProductCommand : IRequest<ApiResponse<ProductDto>>
     {
@@ -13,6 +13,8 @@
 
         public int[] Categories { get; set; }
 
-        public IFormFile File { get; set; }
+        public Stream File { get; set; }
+
+        public string FileFormat { get; set; }
     }
 }
