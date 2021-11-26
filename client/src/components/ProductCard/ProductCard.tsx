@@ -12,9 +12,15 @@ export const ProductCard: React.FC<ProductProps> = props => {
   const { productImage, price, name } = props;
   const classes = useStyles();
   const [isFollow, setFollow] = useState(false);
+  const [raised, setRaised] = useState(false);
   return (
     <ThemeProvider theme={theme}>
-      <Card className={classes.root}>
+      <Card
+        className={classes.root}
+        onMouseOver={() => setRaised(true)}
+        onMouseOut={() => setRaised(false)}
+        raised={raised}
+      >
         <CardMedia height="600" component="img" image={productImage} />
         <CardContent sx={{ height: '70px' }}>
           <Typography variant="h5">{name}</Typography>
