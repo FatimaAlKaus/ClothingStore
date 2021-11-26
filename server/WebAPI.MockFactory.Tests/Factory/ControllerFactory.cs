@@ -17,7 +17,7 @@
 
         public ProductsController CreateProductsController()
         {
-            return new ProductsController(_loggerFactory.CreateLogger<ProductsController>(), _serviceFactory.CreateProductService());
+            return new ProductsController(_loggerFactory.CreateLogger<ProductsController>(), null);
         }
     }
 }

@@ -1,10 +1,11 @@
 namespace WebApi
 {
+    using Application;
     using Application.Interfaces;
     using Application.Services;
-    using CleanArchitecture.Infra.Data.Repositories;
     using Domain.Repository;
     using Infrastructure.EF;
+    using Infrastructure.Repository;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.EntityFrameworkCore;
@@ -28,12 +29,17 @@ namespace WebApi
             services.AddDbContext<DatabaseContext>(options =>
            options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddControllers();
+            services.AddControllers()
+                .AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApi", Version = "v1" });
             });
-
+            services.AddScoped(typeof(IAsyncRepository<>), typeof(BaseAsyncRepository<>));
+            services.AddApplication();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IProductRepository, ProductRepository>();
         }

@@ -1,13 +1,17 @@
 ﻿namespace Application.Interfaces
 {
-    using System.Collections.Generic;
-    using Application.DTO.Request;
-    using Application.ViewModels;
+    using System.Threading.Tasks;
+    using Application.ApiResponse;
+    using Application.Commands.Product.CreateProduct;
+    using Application.Commands.Product.UpdateProduct;
+    using Application.DTO.Response;
 
     public interface IProductService
     {
-        List<ProductDto> GetProducts();
+        Task<ApiResponse<ProductDto>> Create(CreateProductCommand product);
 
-        ProductDto InsetProduct(ProductCreateRequestDto product);
+        Task<ApiResponse<ProductDto>> Update(UpdateProductCommand product);
+
+        Task<ApiResponse> Delete(int id);
     }
 }

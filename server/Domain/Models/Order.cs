@@ -1,13 +1,13 @@
 ﻿namespace Domain.Models
 {
-    using System.Collections.ObjectModel;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
     public class Order : BaseEntity
     {
         [Required]
 
-        public Collection<Product> Products { get; set; }
+        public ICollection<Product> Products { get; set; }
 
         [Required]
 

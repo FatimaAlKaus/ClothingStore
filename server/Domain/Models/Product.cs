@@ -1,6 +1,6 @@
 ﻿namespace Domain.Models
 {
-    using System.Collections.ObjectModel;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
     public class Product : BaseEntity
@@ -12,7 +12,7 @@
         public Order Order { get; set; }
 
         [Required]
-        public Collection<Category> Categories { get; set; }
+        public ICollection<Category> Categories { get; set; }
 
         [Required]
         public decimal Price { get; set; }
@@ -21,8 +21,8 @@
 
         public bool IsDeleted { get; set; }
 
-        public Collection<Comment> Comments { get; set; }
+        public ICollection<Comment> Comments { get; set; }
 
-        public Collection<Rating> Ratings { get; set; }
+        public ICollection<Rating> Ratings { get; set; }
     }
 }
