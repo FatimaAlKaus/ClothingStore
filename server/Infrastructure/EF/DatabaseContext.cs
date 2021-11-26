@@ -25,9 +25,13 @@
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>()
-           .HasOne(u => u.Cart)
-           .WithOne(c => c.User)
-           .HasForeignKey<Cart>(c => c.Id);
+                .HasOne(u => u.Cart)
+                .WithOne(c => c.User)
+                .HasForeignKey<Cart>(c => c.Id);
+
+            modelBuilder.Entity<Category>()
+                .HasIndex(x => x.Name)
+                .IsUnique();
         }
     }
 }

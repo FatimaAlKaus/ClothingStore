@@ -1,30 +1,27 @@
-﻿namespace CleanArchitecture.Infra.Data.Repositories
+﻿namespace Infrastructure.Repository
 {
-    using System.Linq;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
     using Domain.Models;
     using Domain.Repository;
     using Infrastructure.EF;
     using Microsoft.EntityFrameworkCore;
 
-    public class ProductRepository : IProductRepository
+    public class ProductRepository : BaseAsyncRepository<Product>, IProductRepository
     {
-        private DatabaseContext context;
-
         public ProductRepository(DatabaseContext context)
+            : base(context)
         {
-            this.context = context;
         }
 
-        public Product InsertProduct(Product product)
+        public override async Task<IEnumerable<Product>> GetAll()
         {
-            var entity = context.Add(product);
-            context.SaveChanges();
-            return entity.Entity;
+            return await Context.Products.Include(x => x.Categories).ToListAsync();
         }
 
-        IQueryable<Product> IProductRepository.GetProducts()
+        public override async Task<Product> GetById(int id)
         {
-            return context.Products.AsNoTracking();
+            return await Context.Products.Include(x => x.Categories).FirstOrDefaultAsync(x => x.Id == id);
         }
     }
 }
