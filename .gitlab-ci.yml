@@ -1,5 +1,6 @@
 stages:
   - build
+  - test
   - lint
 
 eslint:
@@ -11,11 +12,19 @@ eslint:
     - npm install -g lerna
     - lerna bootstrap --hoist
     - npm run lint
-build_server:
+build:
   image: mcr.microsoft.com/dotnet/sdk:5.0
   tags:
     - docker
   stage: build
   script:
     - cd server
-    - dotnet build
+    - dotnet build -c Release
+test:
+  image: mcr.microsoft.com/dotnet/sdk:5.0
+  tags:
+    - docker
+  stage: test
+  script:
+    - cd server
+    - dotnet test -c Release

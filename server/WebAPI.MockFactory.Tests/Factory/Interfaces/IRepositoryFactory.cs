@@ -5,5 +5,7 @@
     public interface IRepositoryFactory
     {
         IProductRepository CreateProductRepository();
+
+        ICategoryRepository CreateCategoryRepository();
     }
 }

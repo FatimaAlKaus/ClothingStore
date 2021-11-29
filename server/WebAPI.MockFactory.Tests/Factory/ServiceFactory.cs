@@ -15,7 +15,7 @@
 
         public IProductService CreateProductService()
         {
-            return new ProductService(_repositoryFactory.CreateProductRepository());
+            return new ProductService(_repositoryFactory.CreateProductRepository(), _repositoryFactory.CreateCategoryRepository());
         }
     }
 }

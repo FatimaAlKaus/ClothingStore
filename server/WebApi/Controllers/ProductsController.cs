@@ -1,35 +1,59 @@
 ﻿namespace WebApi.Controllers
 {
     using System.Collections.Generic;
-    using Application.DTO.Request;
-    using Application.Interfaces;
-    using Application.ViewModels;
+    using System.Threading.Tasks;
+    using Application.Commands.Product.CreateProduct;
+    using Application.Commands.Product.DeleteProduct;
+    using Application.Commands.Product.UpdateProduct;
+    using Application.DTO.Response;
+    using Application.Queries.Product;
+    using Mapster;
+    using MediatR;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
+    using WebApi.Request;
 
     [ApiController]
     [Route("api/[controller]")]
     public class ProductsController : ControllerBase
     {
-        private readonly ILogger<ProductsController> logger;
-        private IProductService _productService;
+        private readonly ILogger<ProductsController> _logger;
+        private readonly IMediator _mediator;
 
-        public ProductsController(ILogger<ProductsController> logger, IProductService productService)
+        public ProductsController(ILogger<ProductsController> logger, IMediator mediator)
         {
-            this.logger = logger;
-            _productService = productService;
+            _logger = logger;
+            _mediator = mediator;
         }
 
         [HttpGet]
-        public ActionResult<List<ProductDto>> Get()
+        public async Task<ActionResult<List<ProductDto>>> GetAll()
         {
-            return Ok(_productService.GetProducts());
+            return await _mediator.Send(new GetProductListQuery());
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ProductDto>> GetById(int id)
+        {
+            return this.Handle(await _mediator.Send(new GetProductByIdQuery() { Id = id }), System.Net.HttpStatusCode.OK);
         }
 
         [HttpPost]
-        public ActionResult<ProductDto> Insert([FromBody] ProductCreateRequestDto product)
+        public async Task<ActionResult<ProductDto>> Create([FromBody] ProductCreateRequest product)
         {
-            return this.Ok(_productService.InsetProduct(product));
+            return this.Handle(await _mediator.Send(product.Adapt<CreateProductCommand>()), System.Net.HttpStatusCode.Created);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            return this.Handle(await _mediator.Send(new DeleteProductCommand() { Id = id }));
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<ProductDto>> Update([FromBody] ProductUpdateRequest product)
+        {
+            return this.Handle(await _mediator.Send(product.Adapt<UpdateProductCommand>()), System.Net.HttpStatusCode.OK);
         }
     }
 }
