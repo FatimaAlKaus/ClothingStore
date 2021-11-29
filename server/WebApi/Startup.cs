@@ -5,6 +5,7 @@ namespace WebApi
     using Application.Services;
     using Domain.Repository;
     using Infrastructure.EF;
+    using Infrastructure.FileSystem;
     using Infrastructure.Repository;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -36,12 +37,22 @@ namespace WebApi
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApi", Version = "v1" });
             });
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin();
+                    });
+            });
+
             services.AddScoped(typeof(IAsyncRepository<>), typeof(BaseAsyncRepository<>));
             services.AddApplication();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<FileManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,8 +65,13 @@ namespace WebApi
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi v1"));
             }
 
-            app.UseRouting();
+            app.UseCors(policy =>
+            policy
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowAnyOrigin());
 
+            app.UseRouting();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

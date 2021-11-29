@@ -9,6 +9,8 @@
         [MinLength(2)]
         public string Name { get; set; }
 
+        public string ProductImage { get; set; }
+
         public Order Order { get; set; }
 
         [Required]
