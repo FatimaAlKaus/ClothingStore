@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-
 import './App.css';
-import { DetailedProductCard } from './components/DetailedProductCatd';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import { ProductProps } from './interfaces/ProductProps';
 import { ProductList } from './components/ProductCard/ProductList';
@@ -21,7 +20,11 @@ const App: React.FC = () => {
 
   return (
     <div className="App">
-      <ProductList cards={productCards} />
+      <Router>
+        <Routes>
+          <Route path="/products" element={<ProductList cards={productCards} />} />
+        </Routes>
+      </Router>
     </div>
   );
 };

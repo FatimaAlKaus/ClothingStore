@@ -11,6 +11,9 @@ export const ProductList = ({ cards }: { cards: ProductProps[] }) => (
     {cards.map(x => (
       <Grid item xs={2} sm={4} md={3} key={`Grid_${x.id}`}>
         <ProductCard
+          clickEvent={() => {
+            console.log('s');
+          }}
           key={x.id}
           name={x.name}
           price={x.price}
