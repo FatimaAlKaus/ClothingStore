@@ -21,7 +21,7 @@ export const ProductCard: React.FC<ProductProps> = props => {
         onMouseOut={() => setRaised(false)}
         raised={raised}
       >
-        <CardMedia height="600" component="img" image={productImage} />
+        <CardMedia height="600" component="img" src={productImage} />
         <CardContent sx={{ height: '70px' }}>
           <Typography variant="h5">{name}</Typography>
           <Typography variant="inherit" sx={{ fontWeight: 'bold' }}>
