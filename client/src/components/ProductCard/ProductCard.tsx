@@ -30,7 +30,7 @@ export const ProductCard: React.FC<ProductProps> = props => {
         </CardContent>
         <CardActions>
           <Checkbox
-            onClick={e => {
+            onClick={() => {
               setFollow(!isFollow);
             }}
             className={classes.favoriteButton}
