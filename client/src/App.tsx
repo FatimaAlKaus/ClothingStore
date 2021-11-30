@@ -4,12 +4,13 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import { ProductProps } from './interfaces/ProductProps';
 import { ProductList } from './components/ProductCard/ProductList';
+import { requestApi } from './functions/RequestApi';
 
 const App: React.FC = () => {
   const [productCards, setProducts] = useState<ProductProps[]>([]);
 
   const getProducts = async () => {
-    const result = await (await fetch(`http://localhost:5000/api/products`)).json();
+    const result = await requestApi('/products');
     setProducts(result);
   };
   useEffect(() => {

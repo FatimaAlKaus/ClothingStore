@@ -35,7 +35,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="StaticFiles\ProductPhotos\" />
+    <None Include="wwwroot\StaticFiles\ProductPhotos\.gitignore" />
+    <None Include="wwwroot\StaticFiles\ProductPhotos\04991261-2331-4c06-8de9-10c973336937.jfif" />
+    <None Include="wwwroot\StaticFiles\ProductPhotos\0fb8f33a-2277-4023-b3db-16684b2f626a.jfif" />
+    <None Include="wwwroot\StaticFiles\ProductPhotos\2d3f2719-754e-46fe-98d0-4e4a04606998.jfif" />
+    <None Include="wwwroot\StaticFiles\ProductPhotos\66988688-09c2-4944-ad2a-9307a402348d.jfif" />
+    <None Include="wwwroot\StaticFiles\ProductPhotos\757ea742-1f7a-4b68-9b15-51699f89a24e.jfif" />
+    <None Include="wwwroot\StaticFiles\ProductPhotos\8520237e-9833-4583-9f0f-eeb1253c0993.jfif" />
+    <None Include="wwwroot\StaticFiles\ProductPhotos\c1977a3b-8800-4b07-bdb7-40afce5ff326.jfif" />
+    <None Include="wwwroot\StaticFiles\ProductPhotos\f7b6055c-e465-45ed-98aa-38d5ec1a824d.jfif" />
   </ItemGroup>
 
 

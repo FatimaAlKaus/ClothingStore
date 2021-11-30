@@ -4,6 +4,7 @@ export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       textAlign: 'left',
+      fontFamily: theme.typography.fontFamily,
     },
     favoriteButton: {
       justifyContent: 'end',

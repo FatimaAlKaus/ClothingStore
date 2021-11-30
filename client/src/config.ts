@@ -1,3 +1,9 @@
+const port = 5000;
+const host = 'http://localhost';
+const homeAddress = `${host}:${port}/api`;
 export const config = {
-  productPhotoFolder: 'http://127.0.0.1:8887/',
+  host,
+  port,
+  homeAddress,
+  productPhotoFolder: `${host}:${port}/StaticFiles/ProductPhotos/`,
 };
