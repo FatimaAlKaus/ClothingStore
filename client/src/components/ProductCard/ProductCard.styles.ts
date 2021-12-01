@@ -8,7 +8,7 @@ export const useStyles = makeStyles((theme: Theme) =>
     },
     favoriteButton: {
       justifyContent: 'end',
-      margin: '5px 5px',
+      // margin: '5px 5px',
       transform: 'scale(1.3)',
     },
     text: {

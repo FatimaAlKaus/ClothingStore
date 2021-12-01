@@ -5,8 +5,3 @@ export interface ProductProps {
   productImage: string;
   clickEvent: () => void;
 }
-
-export interface IDetailedProduct {
-  name: string;
-  price: number;
-}
