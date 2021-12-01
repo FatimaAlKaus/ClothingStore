@@ -9,7 +9,7 @@ import { theme } from 'src/theme/StyleTheme';
 import { useStyles } from './ProductCard.styles';
 
 export const ProductCard: React.FC<ProductProps> = props => {
-  const { imgPath, price, name } = props;
+  const { productImage, price, name } = props;
   const classes = useStyles();
   const [isFollow, setFollow] = useState(false);
   const [raised, setRaised] = useState(false);
@@ -21,7 +21,7 @@ export const ProductCard: React.FC<ProductProps> = props => {
         onMouseOut={() => setRaised(false)}
         raised={raised}
       >
-        <CardMedia height="600" component="img" image={imgPath} />
+        <CardMedia height="600" component="img" src={productImage} />
         <CardContent sx={{ height: '70px' }}>
           <Typography variant="h5">{name}</Typography>
           <Typography variant="inherit" sx={{ fontWeight: 'bold' }}>
@@ -30,7 +30,7 @@ export const ProductCard: React.FC<ProductProps> = props => {
         </CardContent>
         <CardActions>
           <Checkbox
-            onClick={e => {
+            onClick={() => {
               setFollow(!isFollow);
             }}
             className={classes.favoriteButton}
