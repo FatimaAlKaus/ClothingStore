@@ -5,6 +5,7 @@ namespace WebApi
     using Application.Services;
     using Domain.Repository;
     using Infrastructure.EF;
+    using Infrastructure.FileSystem;
     using Infrastructure.Repository;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -42,6 +43,7 @@ namespace WebApi
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<FileManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,6 +56,7 @@ namespace WebApi
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi v1"));
             }
 
+            app.UseStaticFiles();
             app.UseRouting();
 
             app.UseAuthorization();
