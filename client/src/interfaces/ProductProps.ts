@@ -3,5 +3,6 @@ export interface ProductProps {
   name: string;
   price: number;
   productImage: string;
+  description?: string;
   clickEvent: () => void;
 }

@@ -1,5 +1,6 @@
 import { Image } from '@mui/icons-material';
-import { Button, Grid, Paper, ThemeProvider, Typography } from '@mui/material';
+import { Button, Container, Grid, Paper, Stack, ThemeProvider, Typography } from '@mui/material';
+import CartIcon from '@mui/icons-material/ShoppingBag';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -25,17 +26,25 @@ export const DetailedProductCard = () => {
   }, []);
   return (
     <ThemeProvider theme={theme}>
-      <Grid spacing={{ xs: 1 }} container columns={{ xs: 12 }}>
+      <Grid spacing={{ xs: 2 }} container columns={{ xs: 12 }}>
         <Grid item xs={5}>
           <img style={{ margin: '10px', width: '100%' }} src={`${config.productPhotoFolder}${product?.productImage}`} />
         </Grid>
-        <Grid item xs={3}>
-          <Typography variant="h3" className={classes.title}>
-            {product?.name}
-            <Typography variant="h5" className={classes.price}>
-              {product?.price} Руб
+        <Grid item xs={6}>
+          <Stack spacing={1} direction="column">
+            <Typography variant="h3" className={classes.title}>
+              {product?.name}
+              <Typography variant="h5" className={classes.price}>
+                {product?.price} Руб
+              </Typography>
             </Typography>
-          </Typography>
+            <Typography variant="body1">{product?.description}</Typography>
+            <Container>
+              <Button sx={{ maxWidth: '300px' }} startIcon={<CartIcon />} variant="contained">
+                Добавить
+              </Button>
+            </Container>
+          </Stack>
         </Grid>
       </Grid>
     </ThemeProvider>

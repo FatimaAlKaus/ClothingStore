@@ -26,5 +26,10 @@
         public ICollection<Comment> Comments { get; set; }
 
         public ICollection<Rating> Ratings { get; set; }
+
+        [Required]
+        public ICollection<Color> Colors { get; set; }
+
+        public string Description { get; set; }
     }
 }
