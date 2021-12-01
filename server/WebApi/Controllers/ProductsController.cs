@@ -1,6 +1,7 @@
 ﻿namespace WebApi.Controllers
 {
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using Application.Commands.Product.CreateProduct;
     using Application.Commands.Product.DeleteProduct;
@@ -39,9 +40,17 @@
         }
 
         [HttpPost]
-        public async Task<ActionResult<ProductDto>> Create([FromBody] ProductCreateRequest product)
+        public async Task<ActionResult<ProductDto>> Create([FromForm] ProductCreateRequest product)
         {
-            return this.Handle(await _mediator.Send(product.Adapt<CreateProductCommand>()), System.Net.HttpStatusCode.Created);
+            return this.Handle(
+                await _mediator.Send(new CreateProductCommand()
+                {
+                    Name = product.Name,
+                    Categories = product.Categories,
+                    Price = product.Price,
+                    File = product.File.OpenReadStream(),
+                    FileFormat = product.File.FileName.Split('.').Last(),
+                }), System.Net.HttpStatusCode.Created);
         }
 
         [HttpDelete("{id}")]
