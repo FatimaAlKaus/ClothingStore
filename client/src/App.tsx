@@ -7,6 +7,7 @@ import { ProductProps } from './interfaces/ProductProps';
 import { ProductList } from './components/ProductCard/ProductList';
 import { DetailedProductCard } from './components/ProductCard/DetailedProductCard/DetailedProductCard';
 import { requestApi } from './functions/RequestApi';
+import { theme } from './theme/StyleTheme';
 
 const App: React.FC = () => {
   const [productCards, setProducts] = useState<ProductProps[]>([]);
@@ -22,14 +23,16 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <div className="App">
-      <Router>
-        <Routes>
-          <Route path="/products/:idProduct" element={<DetailedProductCard />} />
-          <Route path="/products" element={<ProductList cards={productCards} />} />
-        </Routes>
-      </Router>
-    </div>
+    <ThemeProvider theme={theme}>
+      <div className="App">
+        <Router>
+          <Routes>
+            <Route path="/products/:idProduct" element={<DetailedProductCard />} />
+            <Route path="/products" element={<ProductList cards={productCards} />} />
+          </Routes>
+        </Router>
+      </div>
+    </ThemeProvider>
   );
 };
 

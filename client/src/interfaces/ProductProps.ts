@@ -6,3 +6,7 @@ export interface ProductProps {
   description?: string;
   clickEvent: () => void;
 }
+export interface SizeProps {
+  id: number;
+  label: string;
+}
