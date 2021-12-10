@@ -4,6 +4,7 @@ export interface ProductProps {
   price: number;
   productImage: string;
   description?: string;
+  photos?: string[];
   clickEvent: () => void;
 }
 export interface SizeProps {

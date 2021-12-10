@@ -35,10 +35,8 @@ const PreviewPhoto = ({
   sx?: SxProps<Theme>;
   spacing?: number;
 }) => {
-  const [selectedIndex, setIndex] = useState(-1);
   const isSmallOrLess = useMediaQuery(theme.breakpoints.up('md'));
   const click = (index: number) => {
-    setIndex(index);
     callBack?.(index);
   };
   return (
@@ -79,36 +77,36 @@ const PhotoPicker = ({
   selectable = false,
   sx,
   columns,
+  index,
 }: {
   photos: (string | undefined)[];
   callBack?: (index: number) => void;
   selectable?: boolean;
   sx?: SxProps<Theme>;
   columns?: number;
+  index: number;
 }) => {
-  const [selectedIndex, setIndex] = useState(-1);
-  const click = (index: number) => {
-    setIndex(index);
-    callBack?.(index);
+  const click = (id: number) => {
+    callBack?.(id);
   };
   return (
     <Box sx={sx}>
       <Grid spacing={1} container columns={{ xs: columns ?? photos.length }}>
-        {photos.map((x, index) => (
+        {photos.map((x, id) => (
           <Grid
-            key={index}
+            key={id}
             item
             xs={1}
             sx={{
               margin: 0,
               padding: 0,
             }}
-            onClick={e => click(index)}
+            onClick={e => click(id)}
           >
             <img
               style={{
                 border: 'solid 0',
-                borderWidth: selectedIndex === index && selectable ? 1 : 0,
+                borderWidth: index === id && selectable ? 1 : 0,
                 height: 'auto',
                 width: '100%',
               }}
@@ -125,54 +123,44 @@ const SizeSelector = ({
   title,
   onChange,
   sx,
+  index,
 }: {
   sizes: SizeProps[];
   title: string;
   onChange?: (index: number) => void;
   sx?: SxProps<Theme>;
-}) => {
-  const [size, setSize] = useState('');
-  return (
-    <Box sx={sx}>
-      <FormControl variant="filled" fullWidth>
-        <InputLabel>{title}</InputLabel>
-        <Select
-          value={size}
-          onChange={e => {
-            setSize(e.target.value);
-            onChange?.(Number(e.target.value));
-          }}
-        >
-          {sizes.map(x => (
-            <MenuItem key={x.id} value={x.id}>
-              {x.label}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-    </Box>
-  );
-};
+  index: number;
+}) => (
+  <Box sx={sx}>
+    <FormControl variant="filled" fullWidth>
+      <InputLabel>{title}</InputLabel>
+      <Select
+        value={index}
+        onChange={e => {
+          onChange?.(Number(e.target.value));
+        }}
+      >
+        {sizes.map(x => (
+          <MenuItem key={x.id} value={x.id}>
+            {x.label}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
+  </Box>
+);
+
 export const DetailedProductCard = () => {
   const { idProduct } = useParams<string>();
   const [product, setProduct] = useState<ProductProps>();
   const isBiggerMd = useMediaQuery(theme.breakpoints.up('md'));
   const isBiggerLg = useMediaQuery(theme.breakpoints.up('lg'));
-
+  const [photo, setPhoto] = useState<string>();
+  const [photoIndex, setPhotoIndex] = useState(0);
   const classes = useStyles(theme);
   const getProductInfo = async () => {
     setProduct(await requestApi(`/products/${idProduct}`));
   };
-  const proudctImages = [product?.productImage, product?.productImage];
-  const proudctImages1 = [
-    product?.productImage,
-    product?.productImage,
-    product?.productImage,
-    product?.productImage,
-    product?.productImage,
-    product?.productImage,
-    product?.productImage,
-  ];
   const options = { style: 'currency', currency: 'RUB' };
   const numberFormat = new Intl.NumberFormat('ru-RU', options);
   useEffect(() => {
@@ -180,19 +168,24 @@ export const DetailedProductCard = () => {
       await getProductInfo();
     })();
   }, []);
+  useEffect(() => {
+    setPhoto(product?.photos?.[0]);
+    setPhotoIndex(0);
+  }, [product]);
+  useEffect(() => {
+    setPhoto(product?.photos?.[photoIndex]);
+  }, [photoIndex]);
+  const [size, setSize] = useState(0);
+  const sizes = [
+    { id: 0, label: 'XL' },
+    { id: 1, label: 'M' },
+    { id: 2, label: 'L' },
+    { id: 3, label: 'XXL' },
+  ];
   const ButtonWithSelectSize = ({ sx }: { sx?: SxProps<Theme> }) => (
     <Grid container spacing={3} order={5} sx={sx}>
       <Grid item xs={12}>
-        <SizeSelector
-          sx={{ height: '50px' }}
-          title="Размер"
-          sizes={[
-            { id: 0, label: 'XL' },
-            { id: 1, label: 'XL' },
-            { id: 2, label: 'XL' },
-            { id: 3, label: 'XL' },
-          ]}
-        />
+        <SizeSelector index={size} sx={{ height: '50px' }} title="Размер" onChange={e => setSize(e)} sizes={sizes} />
       </Grid>
       <Grid item xs={12}>
         <Button sx={{ width: '100%' }} variant="contained" startIcon={<CartIcon />}>
@@ -209,12 +202,12 @@ export const DetailedProductCard = () => {
           callBack={index => {
             console.log(index);
           }}
-          photos={proudctImages}
+          photos={[photo]}
         />
       </Grid>
       <Grid item md={0.2} xs={0} order={{ md: 2 }} />
-      <Grid position={{ md: 'sticky' }} top={0} item md={3.8} xs={12} order={{ md: 3, xs: 1 }}>
-        <Grid spacing={3} container xs={12}>
+      <Grid item md={3.8} xs={12} order={{ md: 3, xs: 1 }}>
+        <Grid position="sticky" top={0} spacing={3} container xs={12}>
           {isBiggerMd ? (
             <>
               <Grid item xs={12}>
@@ -239,9 +232,16 @@ export const DetailedProductCard = () => {
           )}
           {isBiggerMd ? (
             <>
-              {/* <Grid item xs={12} height={10} /> */}
               <Grid item xs={12}>
-                <PhotoPicker columns={isBiggerLg ? 5 : 4} selectable photos={proudctImages1} />
+                <PhotoPicker
+                  index={photoIndex}
+                  callBack={index => {
+                    setPhotoIndex(index);
+                  }}
+                  columns={isBiggerLg ? 5 : 4}
+                  selectable
+                  photos={product?.photos ?? []}
+                />
               </Grid>
             </>
           ) : (
@@ -261,7 +261,14 @@ export const DetailedProductCard = () => {
       {!isBiggerMd ? (
         <>
           <Grid item xs={12} order={4}>
-            <PhotoPicker selectable photos={proudctImages1} />
+            <PhotoPicker
+              index={photoIndex}
+              callBack={index => {
+                setPhotoIndex(index);
+              }}
+              selectable
+              photos={product?.photos ?? []}
+            />
           </Grid>
         </>
       ) : (
@@ -294,15 +301,7 @@ export const DetailedProductCard = () => {
               </Typography>
             </Grid>
             <Grid item xs={6}>
-              <SizeSelector
-                title="Размер"
-                sizes={[
-                  { id: 0, label: 'XL' },
-                  { id: 1, label: 'XL' },
-                  { id: 2, label: 'XL' },
-                  { id: 3, label: 'XL' },
-                ]}
-              />
+              <SizeSelector title="Размер" index={size} onChange={e => setSize(e)} sizes={sizes} />
             </Grid>
             <Grid item xs={6}>
               <Button sx={{ width: '100%', height: '100%' }} variant="contained" startIcon={<CartIcon />}>
