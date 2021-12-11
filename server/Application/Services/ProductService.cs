@@ -44,15 +44,17 @@
                 var model = product.Adapt<Product>();
                 var staticFolder = _configuration["StaticFolder"];
                 var directory = _configuration["ProductPhotoDirectory"];
+                var url = _configuration["ApplicationUrl"];
 
-                model.ProductImage = directory + Guid.NewGuid().ToString() + "." + product.FileFormat;
-                await _fileManager.SaveFileAsync(file: product.File, path: staticFolder + model.ProductImage);
+                var fileName = directory + Guid.NewGuid().ToString() + "." + product.FileFormat;
+                await _fileManager.SaveFileAsync(file: product.File, path: staticFolder + fileName);
+                model.ProductImage = url + fileName;
                 model.Photos = new List<string>();
                 foreach (var image in product.Images)
                 {
                     var file = directory + Guid.NewGuid().ToString() + "." + image.FileFormat;
                     await _fileManager.SaveFileAsync(file: image.Photo, path: staticFolder + file);
-                    model.Photos.Add(file);
+                    model.Photos.Add(url + file);
                 }
 
                 model.CreatedDate = model.ModifiedDate = DateTimeOffset.Now;

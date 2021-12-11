@@ -1,154 +1,16 @@
-import {
-  Button,
-  FormControl,
-  Grid,
-  InputLabel,
-  MenuItem,
-  Select,
-  Typography,
-  Box,
-  Theme,
-  Container,
-  useMediaQuery,
-} from '@mui/material';
+import { Button, Grid, Typography, useMediaQuery } from '@mui/material';
 import CartIcon from '@mui/icons-material/ShoppingBag';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import { height, SxProps } from '@mui/system';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { config } from 'src/config';
 import { requestApi } from 'src/functions/RequestApi';
-import { ProductProps, SizeProps } from 'src/interfaces/ProductProps';
+import { ProductProps } from 'src/interfaces/ProductProps';
 import { theme } from 'src/theme/StyleTheme';
 
 import { useStyles } from './DetailedProductCard.styles';
-
-const PreviewPhoto = ({
-  photos,
-  callBack,
-  sx,
-  spacing,
-}: {
-  photos: (string | undefined)[];
-  callBack?: (index: number) => void;
-  sx?: SxProps<Theme>;
-  spacing?: number;
-}) => {
-  const isSmallOrLess = useMediaQuery(theme.breakpoints.up('md'));
-  const click = (index: number) => {
-    callBack?.(index);
-  };
-  return (
-    <Box sx={sx}>
-      <Grid container columns={{ xs: 1, md: photos.length }} spacing={spacing ?? 0}>
-        {photos.map((x, index) => {
-          if (isSmallOrLess || index === 0) {
-            return (
-              <Grid
-                onClick={e => click(index)}
-                key={index}
-                item
-                xs={1}
-                md={1}
-                sx={{
-                  margin: 0,
-                  padding: 0,
-                }}
-              >
-                <img
-                  style={{
-                    height: 'auto',
-                    width: '100%',
-                  }}
-                  src={config.uri + x}
-                />
-              </Grid>
-            );
-          }
-        })}
-      </Grid>
-    </Box>
-  );
-};
-const PhotoPicker = ({
-  photos,
-  callBack,
-  selectable = false,
-  sx,
-  columns,
-  index,
-}: {
-  photos: (string | undefined)[];
-  callBack?: (index: number) => void;
-  selectable?: boolean;
-  sx?: SxProps<Theme>;
-  columns?: number;
-  index: number;
-}) => {
-  const click = (id: number) => {
-    callBack?.(id);
-  };
-  return (
-    <Box sx={sx}>
-      <Grid spacing={1} container columns={{ xs: columns ?? photos.length }}>
-        {photos.map((x, id) => (
-          <Grid
-            key={id}
-            item
-            xs={1}
-            sx={{
-              margin: 0,
-              padding: 0,
-            }}
-            onClick={e => click(id)}
-          >
-            <img
-              style={{
-                border: 'solid 0',
-                borderWidth: index === id && selectable ? 1 : 0,
-                height: 'auto',
-                width: '100%',
-              }}
-              src={config.uri + x}
-            />
-          </Grid>
-        ))}
-      </Grid>
-    </Box>
-  );
-};
-const SizeSelector = ({
-  sizes,
-  title,
-  onChange,
-  sx,
-  index,
-}: {
-  sizes: SizeProps[];
-  title: string;
-  onChange?: (index: number) => void;
-  sx?: SxProps<Theme>;
-  index: number;
-}) => (
-  <Box sx={sx}>
-    <FormControl variant="filled" fullWidth>
-      <InputLabel>{title}</InputLabel>
-      <Select
-        value={index}
-        onChange={e => {
-          onChange?.(Number(e.target.value));
-        }}
-      >
-        {sizes.map(x => (
-          <MenuItem key={x.id} value={x.id}>
-            {x.label}
-          </MenuItem>
-        ))}
-      </Select>
-    </FormControl>
-  </Box>
-);
+import { PhotoPicker } from './PhotoPicker';
+import { PreviewPhotos } from './PreviewPhotos';
+import { SizeSelector } from './SizeSelector';
 
 export const DetailedProductCard = () => {
   const { idProduct } = useParams<string>();
@@ -182,27 +44,15 @@ export const DetailedProductCard = () => {
     { id: 2, label: 'L' },
     { id: 3, label: 'XXL' },
   ];
-  const ButtonWithSelectSize = ({ sx }: { sx?: SxProps<Theme> }) => (
-    <Grid container spacing={3} order={5} sx={sx}>
-      <Grid item xs={12}>
-        <SizeSelector index={size} sx={{ height: '50px' }} title="Размер" onChange={e => setSize(e)} sizes={sizes} />
-      </Grid>
-      <Grid item xs={12}>
-        <Button sx={{ width: '100%' }} variant="contained" startIcon={<CartIcon />}>
-          Добавить
-        </Button>
-      </Grid>
-    </Grid>
-  );
   return (
     <Grid padding={2} spacing={{ xs: 1, md: 0 }} container columns={{ xs: 12, md: 12 }}>
       <Grid item md={8} xs={12} order={{ md: 1, xs: 2 }}>
-        <PreviewPhoto
+        <PreviewPhotos
           spacing={1}
           callBack={index => {
             console.log(index);
           }}
-          photos={[photo]}
+          photos={isBiggerMd ? [photo, photo] : [photo]}
         />
       </Grid>
       <Grid item md={0.2} xs={0} order={{ md: 2 }} />
@@ -250,7 +100,22 @@ export const DetailedProductCard = () => {
           {isBiggerMd ? (
             <>
               <Grid item xs={12}>
-                <ButtonWithSelectSize />
+                <Grid container spacing={3} order={5}>
+                  <Grid item xs={12}>
+                    <SizeSelector
+                      index={size}
+                      sx={{ height: '50px' }}
+                      title="Размер"
+                      onChange={e => setSize(e)}
+                      sizes={sizes}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Button sx={{ width: '100%' }} variant="contained" startIcon={<CartIcon />}>
+                      Добавить
+                    </Button>
+                  </Grid>
+                </Grid>{' '}
               </Grid>
             </>
           ) : (

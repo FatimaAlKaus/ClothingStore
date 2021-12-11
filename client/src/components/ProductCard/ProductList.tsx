@@ -2,7 +2,6 @@ import React from 'react';
 import { Grid } from '@mui/material';
 
 import { ProductProps } from 'src/interfaces/ProductProps';
-import { config } from 'src/config';
 
 import { ProductCard } from './ProductCard';
 
@@ -17,7 +16,7 @@ export const ProductList = ({ cards }: { cards: ProductProps[] }) => (
           key={x.id}
           name={x.name}
           price={x.price}
-          productImage={config.uri + x.productImage}
+          productImage={x.productImage}
           id={x.id}
         />
       </Grid>
