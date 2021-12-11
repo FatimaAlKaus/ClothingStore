@@ -61,7 +61,7 @@ const PreviewPhoto = ({
                     height: 'auto',
                     width: '100%',
                   }}
-                  src={`${config.productPhotoFolder}${x}`}
+                  src={config.uri + x}
                 />
               </Grid>
             );
@@ -110,7 +110,7 @@ const PhotoPicker = ({
                 height: 'auto',
                 width: '100%',
               }}
-              src={`${config.productPhotoFolder}${x}`}
+              src={config.uri + x}
             />
           </Grid>
         ))}

@@ -42,14 +42,16 @@
             try
             {
                 var model = product.Adapt<Product>();
+                var staticFolder = _configuration["StaticFolder"];
+                var directory = _configuration["ProductPhotoDirectory"];
 
-                model.ProductImage = Guid.NewGuid().ToString() + "." + product.FileFormat;
-                await _fileManager.SaveFileAsync(file: product.File, path: _configuration["ProductPhotoDirectory"] + model.ProductImage);
+                model.ProductImage = directory + Guid.NewGuid().ToString() + "." + product.FileFormat;
+                await _fileManager.SaveFileAsync(file: product.File, path: staticFolder + model.ProductImage);
                 model.Photos = new List<string>();
                 foreach (var image in product.Images)
                 {
-                    var file = Guid.NewGuid().ToString() + "." + image.FileFormat;
-                    await _fileManager.SaveFileAsync(file: image.Photo, path: _configuration["ProductPhotoDirectory"] + file);
+                    var file = directory + Guid.NewGuid().ToString() + "." + image.FileFormat;
+                    await _fileManager.SaveFileAsync(file: image.Photo, path: staticFolder + file);
                     model.Photos.Add(file);
                 }
 

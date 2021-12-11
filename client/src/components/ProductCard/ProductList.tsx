@@ -17,7 +17,7 @@ export const ProductList = ({ cards }: { cards: ProductProps[] }) => (
           key={x.id}
           name={x.name}
           price={x.price}
-          productImage={`${config.productPhotoFolder}${x.productImage}`}
+          productImage={config.uri + x.productImage}
           id={x.id}
         />
       </Grid>

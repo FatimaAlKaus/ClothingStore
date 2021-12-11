@@ -16,8 +16,6 @@
                 Name = product.Name,
                 Categories = product.Categories.Select(x => x.Adapt<CategoryDto>()).ToList(),
                 Price = product.Price,
-
-                // Photos = product.Photos,
                 Description = product.Description ?? string.Empty,
                 CreatedDate = product.CreatedDate,
                 ModifiedDate = product.ModifiedDate,
