@@ -17,5 +17,5 @@
 !.vscode/launch.json
 !.vscode/extensions.json
 
-/server/WebApi/Files/Images
+
 /server/WebApi/StaticFiles/ProductPhotos/*

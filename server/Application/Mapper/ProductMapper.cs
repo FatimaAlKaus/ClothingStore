@@ -5,7 +5,6 @@
     using Application.DTO.Response;
     using Domain.Models;
     using Mapster;
-    using Microsoft.Extensions.Configuration;
 
     public static class ProductMapper
     {
