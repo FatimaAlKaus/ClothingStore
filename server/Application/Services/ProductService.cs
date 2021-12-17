@@ -42,8 +42,21 @@
             try
             {
                 var model = product.Adapt<Product>();
-                model.ProductImage = Guid.NewGuid().ToString() + "." + product.FileFormat;
-                await _fileManager.SaveFileAsync(file: product.File, path: _configuration["ProductPhotoDirectory"] + model.ProductImage);
+                var staticFolder = _configuration["StaticFolder"];
+                var directory = _configuration["ProductPhotoDirectory"];
+                var url = _configuration["ApplicationUrl"];
+
+                var fileName = directory + Guid.NewGuid().ToString() + "." + product.FileFormat;
+                await _fileManager.SaveFileAsync(file: product.File, path: staticFolder + fileName);
+                model.ProductImage = url + fileName;
+                model.Photos = new List<string>();
+                foreach (var image in product.Images)
+                {
+                    var file = directory + Guid.NewGuid().ToString() + "." + image.FileFormat;
+                    await _fileManager.SaveFileAsync(file: image.Photo, path: staticFolder + file);
+                    model.Photos.Add(url + file);
+                }
+
                 model.CreatedDate = model.ModifiedDate = DateTimeOffset.Now;
                 model.Categories = new List<Category>();
                 foreach (var index in product.Categories)
@@ -59,8 +72,9 @@
 
                 return (await _productRepository.Add(model)).Adapt<ProductDto>();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogError(ex.ToString());
                 return ApiError.InternalServerError("Failed to create new product");
             }
         }
