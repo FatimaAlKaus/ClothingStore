@@ -15,6 +15,7 @@ const App: React.FC = () => {
 
   const getProducts = async () => {
     const result = await requestApi('/products');
+    console.log(result);
     setProducts(result);
   };
   useEffect(() => {
