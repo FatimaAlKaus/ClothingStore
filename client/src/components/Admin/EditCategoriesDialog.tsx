@@ -20,11 +20,13 @@ export const EditCategoriesDialog = ({
   product,
   onClose,
   allCategories,
+  returnCategories,
 }: {
   open: boolean;
   product?: ProductProps;
   onClose?: () => void;
   allCategories: ICategory[];
+  returnCategories: (categories: ICategory[]) => void;
 }) => {
   const [categories, setCategories] = useState<ICategory[]>();
   useEffect(() => {
@@ -33,6 +35,7 @@ export const EditCategoriesDialog = ({
     };
     setProductCategories();
   }, [product]);
+
   return (
     <Dialog open={open}>
       <DialogTitle>{product?.name}</DialogTitle>
@@ -41,7 +44,16 @@ export const EditCategoriesDialog = ({
           {allCategories?.map(x => (
             <FormControlLabel
               key={x.id}
-              control={<Checkbox checked={categories?.map(y => y.id).includes(x.id)} />}
+              control={
+                <Checkbox
+                  onChange={() => {
+                    categories?.map(c => c.id).includes(x.id)
+                      ? setCategories(categories?.filter(y => y.id !== x.id))
+                      : setCategories([...categories!, x]);
+                  }}
+                  checked={categories?.map(y => y.id).includes(x.id)}
+                />
+              }
               label={`${x.name}`}
             />
           ))}
@@ -51,7 +63,14 @@ export const EditCategoriesDialog = ({
         <Button autoFocus onClick={() => onClose?.()}>
           Cancel
         </Button>
-        <Button>Ok</Button>
+        <Button
+          onClick={() => {
+            returnCategories(categories!);
+            onClose?.();
+          }}
+        >
+          Ok
+        </Button>
       </DialogActions>
     </Dialog>
   );

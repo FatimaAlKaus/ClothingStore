@@ -3,13 +3,14 @@ import { Admin, Resource, useDataProvider } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
 import AddIcon from '@mui/icons-material/Add';
 import SaveIcon from '@mui/icons-material/Save';
-import { DataGrid, GridColDef, GridRenderCellParams, GridValueGetterParams } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridEditRowsModel, GridRenderCellParams, GridValueGetterParams } from '@mui/x-data-grid';
 import { Box } from '@mui/system';
 import { Button, Paper, Typography } from '@mui/material';
 
 import { ProductProps } from 'src/interfaces/ProductProps';
 import { ICategory } from 'src/interfaces/ICategory';
 import { requestApi } from 'src/functions/RequestApi';
+import { UpdatesProducts } from 'src/functions/SendProductUpdateRequest';
 
 import { useStyles } from './AdminPanel.styles';
 import { EditCategoriesDialog } from './EditCategoriesDialog';
@@ -23,9 +24,6 @@ export const AdminPanel = () => {
   useEffect(() => {
     (async () => {
       const reply = await requestApi('/products');
-      for (let i = 0; i < reply.length; i++) {
-        reply[i].categories = reply[i].categories.map((x: ICategory) => x.name).join(', ');
-      }
       setProducts(reply);
     })();
     (async () => {
@@ -34,14 +32,15 @@ export const AdminPanel = () => {
   }, []);
 
   const editOnClick = async (id: number) => {
-    const reply = await requestApi(`/products/${id}`);
-    setIsOpen(true);
+    // const reply = await requestApi(`/products/${id}`);
+    const reply = products?.find(x => x.id === id);
     setProduct(reply);
+    setIsOpen(true);
   };
   const classes = useStyles();
   const RowButtonWithText = (params: GridRenderCellParams) => (
     <div className={classes.actionRow}>
-      <Typography>{params.value}</Typography>
+      <Typography>{params.value.map((x: ICategory) => x.name).join(', ')}</Typography>
       <Button
         variant="text"
         onClick={() => {
@@ -53,7 +52,6 @@ export const AdminPanel = () => {
       </Button>
     </div>
   );
-
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', flex: 0.5 },
     {
@@ -108,7 +106,7 @@ export const AdminPanel = () => {
           rowsPerPageOptions={[5]}
           checkboxSelection
           disableSelectionOnClick
-          onEditRowsModelChange={() => {
+          onEditRowsModelChange={param => {
             setDisabled(false);
           }}
         />
@@ -117,7 +115,10 @@ export const AdminPanel = () => {
             variant="contained"
             disabled={isDisabled}
             className={classes.saveButton}
-            onClick={() => setDisabled(true)}
+            onClick={() => {
+              UpdatesProducts(products!);
+              setDisabled(true);
+            }}
             startIcon={<SaveIcon />}
           >
             Save
@@ -125,6 +126,12 @@ export const AdminPanel = () => {
         </div>
       </Paper>
       <EditCategoriesDialog
+        returnCategories={categ => {
+          const newProduct = product!;
+          newProduct.categories = categ;
+          setProduct(newProduct);
+          setDisabled(false);
+        }}
         allCategories={categories!}
         onClose={() => setIsOpen(false)}
         product={product}
