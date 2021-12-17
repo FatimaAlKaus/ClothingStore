@@ -21,6 +21,13 @@ export const AdminPanel = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [product, setProduct] = useState<ProductProps>();
   const [categories, setAllCategories] = useState<ICategory[]>();
+  // const addToChanged = (id: number) => {
+  //   if (!Number.isNaN(id) && changedProducts.indexOf(id) === -1) {
+  //     changedProducts.push(id);
+  //     console.log(changedProducts);
+  //   }
+  // };
+
   useEffect(() => {
     (async () => {
       const reply = await requestApi('/products');
@@ -32,7 +39,6 @@ export const AdminPanel = () => {
   }, []);
 
   const editOnClick = async (id: number) => {
-    // const reply = await requestApi(`/products/${id}`);
     const reply = products?.find(x => x.id === id);
     setProduct(reply);
     setIsOpen(true);
@@ -107,6 +113,7 @@ export const AdminPanel = () => {
           checkboxSelection
           disableSelectionOnClick
           onEditRowsModelChange={param => {
+            const key = Number(Object.keys(JSON.parse(JSON.stringify(param)))[0]);
             setDisabled(false);
           }}
         />
