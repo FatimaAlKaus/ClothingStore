@@ -2,6 +2,7 @@ namespace WebApi
 {
     using Application;
     using Application.Interfaces;
+    using Application.Mapper;
     using Application.Services;
     using Domain.Repository;
     using Infrastructure.EF;
@@ -73,7 +74,6 @@ namespace WebApi
 
             app.UseStaticFiles();
             app.UseRouting();
-
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

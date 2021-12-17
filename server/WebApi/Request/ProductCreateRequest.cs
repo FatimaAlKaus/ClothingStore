@@ -19,5 +19,7 @@
 
         [DataType(DataType.Upload)]
         public IFormFile File { get; set; }
+
+        public IFormFile[] Images { get; set; }
     }
 }

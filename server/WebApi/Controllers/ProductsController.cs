@@ -50,6 +50,9 @@
                     Price = product.Price,
                     File = product.File.OpenReadStream(),
                     FileFormat = product.File.FileName.Split('.').Last(),
+                    Images = product.Images
+                    .Select(x => new Image() { Photo = x.OpenReadStream(), FileFormat = x.FileName.Split('.').Last() })
+                    .ToArray(),
                 }), System.Net.HttpStatusCode.Created);
         }
 

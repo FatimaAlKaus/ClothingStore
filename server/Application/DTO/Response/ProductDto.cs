@@ -13,6 +13,10 @@
 
         public string ProductImage { get; init; }
 
+        public string Description { get; init; }
+
+        public List<string> Photos { get; set; }
+
         public List<CategoryDto> Categories { get; init; }
 
         public DateTimeOffset CreatedDate { get; init; }

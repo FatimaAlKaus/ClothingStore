@@ -15,6 +15,8 @@
 
         public Stream File { get; set; }
 
+        public Image[] Images { get; set; }
+
         public string FileFormat { get; set; }
     }
 }

@@ -11,6 +11,8 @@
 
         public string ProductImage { get; set; }
 
+        public List<string> Photos { get; set; }
+
         public Order Order { get; set; }
 
         [Required]
@@ -26,5 +28,9 @@
         public ICollection<Comment> Comments { get; set; }
 
         public ICollection<Rating> Ratings { get; set; }
+
+        public ICollection<Color> Colors { get; set; }
+
+        public string Description { get; set; }
     }
 }
