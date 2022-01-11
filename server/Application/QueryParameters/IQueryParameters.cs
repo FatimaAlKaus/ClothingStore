@@ -1,6 +1,6 @@
-﻿namespace WebApi.QueryParameters
+﻿namespace Application.QueryParameters
 {
-    internal interface IQueryParameters
+    public interface IQueryParameters
     {
         int PageNumber { get; init; }
 

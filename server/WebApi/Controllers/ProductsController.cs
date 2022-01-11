@@ -1,13 +1,14 @@
 ﻿namespace WebApi.Controllers
 {
-    using System.Collections.Generic;
     using System.Linq;
+    using System.Linq.Dynamic.Core;
     using System.Threading.Tasks;
     using Application.Commands.Product.CreateProduct;
     using Application.Commands.Product.DeleteProduct;
     using Application.Commands.Product.UpdateProduct;
     using Application.DTO.Response;
     using Application.Queries.Product;
+    using Application.QueryParameters;
     using Mapster;
     using MediatR;
     using Microsoft.AspNetCore.Mvc;
@@ -28,9 +29,9 @@
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<ProductDto>>> GetAll([FromQuery]string orderBy)
+        public async Task<ActionResult<PagedResult<ProductDto>>> GetAll([FromQuery] ProductsQueryParameters parameters)
         {
-            return await _mediator.Send(new GetProductListQuery());
+            return await _mediator.Send(new GetProductListQuery() { Parameters = parameters });
         }
 
         [HttpGet("{id}")]

@@ -1,5 +1,6 @@
 namespace WebApi
 {
+    using System;
     using Application;
     using Application.Interfaces;
     using Application.Services;
@@ -28,7 +29,9 @@ namespace WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DatabaseContext>(options =>
-           options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+                options
+                    .UseNpgsql(Configuration.GetConnectionString("DefaultConnection"))
+                    .LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information));
 
             services.AddControllers()
                 .AddNewtonsoftJson(options =>

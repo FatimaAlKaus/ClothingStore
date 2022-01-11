@@ -1,6 +1,6 @@
-﻿namespace WebApi.QueryParameters
+﻿namespace Application.QueryParameters
 {
-    internal abstract class QueryParameters : IQueryParameters
+    public abstract class QueryParameters : IQueryParameters
     {
         private const int MaxPageSize = 999;
         private int _pageSize = 12;
