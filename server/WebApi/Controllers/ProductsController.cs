@@ -28,7 +28,7 @@
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<ProductDto>>> GetAll()
+        public async Task<ActionResult<List<ProductDto>>> GetAll([FromQuery]string orderBy)
         {
             return await _mediator.Send(new GetProductListQuery());
         }
