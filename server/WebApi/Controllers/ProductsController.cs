@@ -31,7 +31,7 @@
         [HttpGet]
         public async Task<ActionResult<PagedResult<ProductDto>>> GetAll([FromQuery] ProductsQueryParameters parameters)
         {
-            return await _mediator.Send(new GetProductListQuery() { Parameters = parameters });
+            return this.Handle(await _mediator.Send(new GetProductListQuery() { Parameters = parameters }), successStatusCode: System.Net.HttpStatusCode.OK);
         }
 
         [HttpGet("{id}")]
