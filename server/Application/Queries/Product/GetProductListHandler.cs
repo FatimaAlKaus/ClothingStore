@@ -6,11 +6,11 @@
     using System.Threading;
     using System.Threading.Tasks;
     using Application.ApiResponse;
+    using Application.Common;
     using Application.DTO.Response;
     using Domain.Repository;
     using Mapster;
     using MediatR;
-    using Microsoft.EntityFrameworkCore;
 
     public class GetProductListHandler : IRequestHandler<GetProductListQuery, ApiResponse<PagedResult<ProductDto>>>
     {
@@ -25,48 +25,14 @@
         {
             try
             {
-                var filter = request.Parameters.Filter;
-                var orderBy = request.Parameters.OrderBy;
-                var takenNumber = request.Parameters.PageSize;
-                var skippedNumber = (request.Parameters.PageNumber - 1) * request.Parameters.PageSize;
-                var products = _productRepository.GetAsQueryable();
-
-                if (!(string.IsNullOrEmpty(filter) || string.IsNullOrWhiteSpace(filter)))
+                var pagedResult = await DefaulQueryApplyer.GetPagedResult(request.Parameters, _productRepository.GetAsQueryable());
+                return new PagedResult<ProductDto>
                 {
-                    try
-                    {
-                        products = products.Where(filter);
-                    }
-                    catch
-                    {
-                        throw new ArgumentException("Invalid argument", nameof(filter));
-                    }
-                }
-
-                var totalItems = await products.CountAsync();
-
-                if (!(string.IsNullOrEmpty(orderBy) || string.IsNullOrWhiteSpace(orderBy)))
-                {
-                    try
-                    {
-                        products = products.OrderBy(orderBy);
-                    }
-                    catch
-                    {
-                        throw new ArgumentException("Invalid argument", nameof(orderBy));
-                    }
-                }
-
-                products = products.Skip(skippedNumber).Take(takenNumber);
-
-                var result = products.Select(x => x.Adapt<ProductDto>());
-                return new PagedResult<ProductDto>()
-                {
-                    PageCount = (totalItems + takenNumber - 1) / takenNumber,
-                    CurrentPage = request.Parameters.PageNumber,
-                    Queryable = result,
-                    PageSize = takenNumber,
-                    RowCount = totalItems,
+                    PageCount = pagedResult.PageCount,
+                    PageSize = pagedResult.PageSize,
+                    CurrentPage = pagedResult.CurrentPage,
+                    RowCount = pagedResult.RowCount,
+                    Queryable = pagedResult.Queryable.Select(x => x.Adapt<ProductDto>()),
                 };
             }
             catch (ArgumentException ex)
