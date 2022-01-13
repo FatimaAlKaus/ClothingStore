@@ -1,15 +1,18 @@
 ﻿namespace Application.Queries.Product
 {
-    using System.Collections.Generic;
+    using System;
     using System.Linq;
+    using System.Linq.Dynamic.Core;
     using System.Threading;
     using System.Threading.Tasks;
+    using Application.ApiResponse;
+    using Application.Common;
     using Application.DTO.Response;
     using Domain.Repository;
     using Mapster;
     using MediatR;
 
-    public class GetProductListHandler : IRequestHandler<GetProductListQuery, List<ProductDto>>
+    public class GetProductListHandler : IRequestHandler<GetProductListQuery, ApiResponse<PagedResult<ProductDto>>>
     {
         private readonly IProductRepository _productRepository;
 
@@ -18,9 +21,28 @@
             _productRepository = productRepository;
         }
 
-        public async Task<List<ProductDto>> Handle(GetProductListQuery request, CancellationToken cancellationToken)
+        public async Task<ApiResponse<PagedResult<ProductDto>>> Handle(GetProductListQuery request, CancellationToken cancellationToken)
         {
-            return (await _productRepository.GetAll()).Select(x => x.Adapt<ProductDto>()).ToList();
+            try
+            {
+                var pagedResult = await DefaulQueryApplyer.GetPagedResult(request.Parameters, _productRepository.GetAsQueryable());
+                return new PagedResult<ProductDto>
+                {
+                    PageCount = pagedResult.PageCount,
+                    PageSize = pagedResult.PageSize,
+                    CurrentPage = pagedResult.CurrentPage,
+                    RowCount = pagedResult.RowCount,
+                    Queryable = pagedResult.Queryable.Select(x => x.Adapt<ProductDto>()),
+                };
+            }
+            catch (ArgumentException ex)
+            {
+                return ApiError.BadReqeust(ex.Message);
+            }
+            catch (Exception)
+            {
+                return ApiError.InternalServerError("Server error");
+            }
         }
     }
 }

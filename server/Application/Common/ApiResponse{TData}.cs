@@ -5,13 +5,8 @@
     public class ApiResponse<TData> : ApiResponse, IApiResponse<TData>
         where TData : class
     {
-        public ApiResponse()
+        private ApiResponse()
         {
-        }
-
-        public ApiResponse(TData data)
-        {
-            Data = data;
         }
 
         public TData Data { get; set; }

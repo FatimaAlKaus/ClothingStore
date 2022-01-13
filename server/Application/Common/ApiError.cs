@@ -22,6 +22,8 @@
 
         public static ApiError InternalServerError(string message) => new (HttpStatusCode.InternalServerError, "InternalServerError", message);
 
+        public static ApiError BadReqeust(string message) => new (HttpStatusCode.BadRequest, "BadRequest", message);
+
         public static ApiError NotFound(string resourceName, int id) => new (HttpStatusCode.NotFound, $"{resourceName}NotFound", $"{resourceName} with id {id} not found");
 
         public static ApiError Conflict(string propName, string resourceName, string propValue) => new (HttpStatusCode.Conflict, $"{propName}Conflict", $"{resourceName} with {propName} = '{propValue}' already exists");
