@@ -1,6 +1,7 @@
 ﻿namespace Infrastructure.Repository
 {
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using Domain.Models;
     using Domain.Repository;
@@ -17,6 +18,11 @@
         public override async Task<IEnumerable<Product>> GetAll()
         {
             return await Context.Products.Include(x => x.Categories).ToListAsync();
+        }
+
+        public IQueryable<Product> GetAsQueryable()
+        {
+            return Context.Products.AsQueryable();
         }
 
         public override async Task<Product> GetById(int id)
