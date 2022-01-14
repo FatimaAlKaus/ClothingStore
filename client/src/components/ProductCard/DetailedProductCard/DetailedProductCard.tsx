@@ -7,7 +7,6 @@ import { requestApi } from 'src/functions/RequestApi';
 import { ProductProps } from 'src/interfaces/ProductProps';
 import { theme } from 'src/theme/StyleTheme';
 
-import { useStyles } from './DetailedProductCard.styles';
 import { PhotoPicker } from './PhotoPicker';
 import { PreviewPhotos } from './PreviewPhotos';
 import { SizeSelector } from './SizeSelector';
@@ -19,7 +18,6 @@ export const DetailedProductCard = () => {
   const isBiggerLg = useMediaQuery(theme.breakpoints.up('lg'));
   const [photo, setPhoto] = useState<string>();
   const [photoIndex, setPhotoIndex] = useState(0);
-  const classes = useStyles(theme);
   const getProductInfo = async () => {
     setProduct(await requestApi(`/products/${idProduct}`));
   };
@@ -47,13 +45,7 @@ export const DetailedProductCard = () => {
   return (
     <Grid padding={2} spacing={{ xs: 1, md: 0 }} container columns={{ xs: 12, md: 12 }}>
       <Grid item md={8} xs={12} order={{ md: 1, xs: 2 }}>
-        <PreviewPhotos
-          spacing={1}
-          callBack={index => {
-            console.log(index);
-          }}
-          photos={isBiggerMd ? [photo, photo] : [photo]}
-        />
+        <PreviewPhotos spacing={1} photos={isBiggerMd ? [photo, photo] : [photo]} />
       </Grid>
       <Grid item md={0.2} xs={0} order={{ md: 2 }} />
       <Grid item md={3.8} xs={12} order={{ md: 3, xs: 1 }}>

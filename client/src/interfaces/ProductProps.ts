@@ -5,7 +5,7 @@ export interface ProductProps {
   productImage: string;
   description?: string;
   photos?: string[];
-  clickEvent: () => void;
+  clickEvent?: () => void;
 }
 export interface SizeProps {
   id: number;
