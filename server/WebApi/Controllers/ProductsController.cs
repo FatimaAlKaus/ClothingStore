@@ -7,7 +7,6 @@
     using Application.Commands.Product.DeleteProduct;
     using Application.Commands.Product.UpdateProduct;
     using Application.DTO.Response;
-    using Application.Interfaces;
     using Application.Queries.Product;
     using Application.QueryParameters;
     using Mapster;
@@ -22,13 +21,11 @@
     {
         private readonly ILogger<ProductsController> _logger;
         private readonly IMediator _mediator;
-        private readonly IProductService _productService;
 
-        public ProductsController(ILogger<ProductsController> logger, IMediator mediator, IProductService productService)
+        public ProductsController(ILogger<ProductsController> logger, IMediator mediator)
         {
             _logger = logger;
             _mediator = mediator;
-            _productService = productService;
         }
 
         [HttpGet]
@@ -66,17 +63,10 @@
             return this.Handle(await _mediator.Send(new DeleteProductCommand() { Id = id }));
         }
 
-        [HttpPut("{id}")]
+        [HttpPut]
         public async Task<ActionResult<ProductDto>> Update([FromBody] ProductUpdateRequest product)
         {
             return this.Handle(await _mediator.Send(product.Adapt<UpdateProductCommand>()), System.Net.HttpStatusCode.OK);
-        }
-
-        [HttpPut]
-        public async Task<ActionResult> UpdateRange([FromBody] List<ProductUpdateRequest> products)
-        {
-            var result = await _productService.UpdateRange(products.Select(x => x.Adapt<UpdateProductCommand>()).ToList());
-            return Ok();
         }
     }
 }

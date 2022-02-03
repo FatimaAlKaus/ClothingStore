@@ -110,37 +110,10 @@
 
                 model.Name = product.Name;
                 model.Price = product.Price;
-                model.Categories = new List<Category>();
-                foreach (var categoryId in product.Categories)
-                {
-                    var category = await _categoryRepository.GetById(categoryId);
-                    if (category is not null)
-                    {
-                        model.Categories.Add(category);
-                    }
-                }
-
                 model.ModifiedDate = DateTimeOffset.Now;
 
                 await _productRepository.Update();
                 return model.Adapt<ProductDto>();
-            }
-            catch (Exception)
-            {
-                return ApiError.InternalServerError("Faield to update product");
-            }
-        }
-
-        public async Task<ApiResponse> UpdateRange(List<UpdateProductCommand> list)
-        {
-            try
-            {
-                foreach (var item in list)
-                {
-                    await Update(item);
-                }
-
-                return new ApiResponse();
             }
             catch (Exception)
             {

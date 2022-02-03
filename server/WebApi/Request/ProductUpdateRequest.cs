@@ -14,7 +14,5 @@
         [Required]
         [Range(100, double.MaxValue)]
         public decimal Price { get; set; }
-
-        public int[] Categories { get; set; }
     }
 }

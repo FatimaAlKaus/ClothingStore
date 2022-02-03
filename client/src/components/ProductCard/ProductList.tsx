@@ -18,7 +18,6 @@ export const ProductList = ({ cards }: { cards: ProductProps[] }) => (
           price={x.price}
           productImage={x.productImage}
           id={x.id}
-          categories={[]}
         />
       </Grid>
     ))}

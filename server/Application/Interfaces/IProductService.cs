@@ -1,6 +1,5 @@
 ﻿namespace Application.Interfaces
 {
-    using System.Collections.Generic;
     using System.Threading.Tasks;
     using Application.ApiResponse;
     using Application.Commands.Product.CreateProduct;
@@ -12,8 +11,6 @@
         Task<ApiResponse<ProductDto>> Create(CreateProductCommand product);
 
         Task<ApiResponse<ProductDto>> Update(UpdateProductCommand product);
-
-        Task<ApiResponse> UpdateRange(List<UpdateProductCommand> list);
 
         Task<ApiResponse> Delete(int id);
     }

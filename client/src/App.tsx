@@ -8,10 +8,9 @@ import { ProductList } from './components/ProductCard/ProductList';
 import { DetailedProductCard } from './components/ProductCard/DetailedProductCard/DetailedProductCard';
 import { requestApi } from './functions/RequestApi';
 import { theme } from './theme/StyleTheme';
-import { AdminPanel } from './components/Admin/AdminPanel';
 
 const App: React.FC = () => {
-  const [productProps, setProducts] = useState<ProductProps[]>([]);
+  const [productCards, setProducts] = useState<ProductProps[]>([]);
 
   const getProducts = async () => {
     const result = await requestApi('/products');
@@ -30,8 +29,7 @@ const App: React.FC = () => {
         <Router>
           <Routes>
             <Route path="/products/:idProduct" element={<DetailedProductCard />} />
-            <Route path="/products" element={<ProductList cards={productProps} />} />
-            <Route path="/admin" element={<AdminPanel />} />
+            <Route path="/products" element={<ProductList cards={productCards} />} />
           </Routes>
         </Router>
       </div>
