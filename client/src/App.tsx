@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Navigate, Route, Routes } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
 
 import { ProductProps } from './interfaces/ProductProps';
@@ -28,6 +28,7 @@ const App: React.FC = () => {
       <div className="App">
         <Router>
           <Routes>
+            <Route path="" element={<Navigate to="/products" />} />
             <Route path="/products/:idProduct" element={<DetailedProductCard />} />
             <Route path="/products" element={<ProductList cards={productCards} />} />
           </Routes>

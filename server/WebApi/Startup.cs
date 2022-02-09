@@ -56,6 +56,11 @@ namespace WebApi
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<FileManager>();
+
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "wwwroot";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -74,13 +79,25 @@ namespace WebApi
             .AllowAnyHeader()
             .AllowAnyOrigin());
 
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseSpaStaticFiles();
+
             app.UseRouting();
-            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
+           {
+               endpoints.MapControllers();
+           });
+
+            app.UseSpa(spa =>
             {
-                endpoints.MapControllers();
+                spa.Options.SourcePath = "wwwroot";
+
+                // if (env.IsDevelopment())
+                // {
+                //     spa.UseReactDevelopmentServer(npmScript: "start");
+                // }
             });
         }
     }
