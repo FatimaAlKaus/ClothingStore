@@ -29,7 +29,7 @@ const App: React.FC = () => {
         <Router>
           <Routes>
             <Route path="/products/:idProduct" element={<DetailedProductCard />} />
-            <Route path="/products" element={<ProdoductsPanel products={products.queryable} />} />
+            <Route path="/products" element={<ProdoductsPanel />} />
             <Route path="/searchbar" element={<SearchBar />} />
           </Routes>
         </Router>

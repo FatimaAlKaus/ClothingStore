@@ -3,31 +3,28 @@ import React, { useState, useEffect, useRef } from 'react';
 import { SearchBar } from 'src/components/ProductCard/SearchBar/SearchBar';
 import { ProductList } from 'src/components/ProductCard/ProductList';
 import { ProductProps } from 'src/interfaces/ProductProps';
+import { getAllProducts } from 'src/functions/RequestApi';
 
-interface ProductsPanelProps {
-  products: ProductProps[];
-}
-export const ProdoductsPanel: React.FC<ProductsPanelProps> = ({ products }) => {
-  const [displayedProducts, setDisplayedProducts] = useState<ProductProps[]>([]);
-  const allProducts = useRef(products);
+export const ProdoductsPanel: React.FC = () => {
+  const [products, setProducts] = useState<ProductProps[]>([]);
   useEffect(() => {
-    setDisplayedProducts(products);
-    allProducts.current = products;
-  }, [products]);
-  const searchHandler = (text: string) => {
+    (async () => {
+      setProducts(await getAllProducts());
+    })();
+  }, []);
+  const searchHandler = async (text: string) => {
+    const allProducts = await getAllProducts();
     const result =
-      text === ''
-        ? allProducts.current
-        : allProducts.current.filter(x => x.name.toLowerCase().includes(text.toLowerCase()));
-    setDisplayedProducts(result);
+      text === '' ? allProducts : allProducts.filter(x => x.name.toLowerCase().includes(text.toLowerCase()));
+    setProducts(result);
   };
-  const clearFilter = () => {
-    setDisplayedProducts(allProducts.current);
+  const clearFilter = async () => {
+    setProducts(await getAllProducts());
   };
   return (
     <div style={{ textAlign: 'right' }}>
-      <SearchBar onTextChanged={searchHandler} onClear={clearFilter} sx={{ margin: '10px' }} />
-      <ProductList cards={displayedProducts} />
+      <SearchBar onFind={searchHandler} onClear={clearFilter} sx={{ margin: '10px' }} />
+      <ProductList cards={products} />
     </div>
   );
 };
