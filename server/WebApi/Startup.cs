@@ -73,6 +73,14 @@ namespace WebApi
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi v1"));
             }
 
+            using (var scope = app.ApplicationServices.CreateScope())
+            {
+                using (var context = scope.ServiceProvider.GetRequiredService<DatabaseContext>())
+                {
+                    context.Database.EnsureCreated();
+                }
+            }
+
             app.UseCors(policy =>
             policy
             .AllowAnyMethod()

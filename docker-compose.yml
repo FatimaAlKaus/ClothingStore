@@ -13,7 +13,7 @@ services:
     - "5432:5432"
 
   server:
-    image: 8db01e8a205d
+    build: .
     restart: always
     ports:
     - 5000:80
