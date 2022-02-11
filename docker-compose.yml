@@ -19,7 +19,7 @@ services:
     - 5000:80
     volumes:
     - ./server/WebApi/appsettings.Docker.json:/app/appsettings.json
-    - ./server/WebApi/wwwroot:/app/wwwroot
+    - ./server/WebApi/wwwroot/StaticFiles:/app/wwwroot/StaticFiles
     links:
     - db
 
