@@ -1,6 +1,6 @@
 import { Close, Search } from '@mui/icons-material';
 import { InputAdornment, TextField } from '@mui/material';
-import { Box, SxProps, Theme } from '@mui/system';
+import { Box } from '@mui/system';
 import React, { useState } from 'react';
 
 import { useStyles } from './SearchBar.styles';
@@ -9,9 +9,8 @@ interface SearchBarParams {
   onFind?: (text: string) => void;
   onTextChanged?: (text: string) => void;
   onClear?: () => void;
-  sx?: SxProps<Theme>;
 }
-export const SearchBar: React.FC<SearchBarParams> = ({ onFind, onClear, onTextChanged, sx }) => {
+export const SearchBar: React.FC<SearchBarParams> = ({ onFind, onClear, onTextChanged }) => {
   const [text, setText] = useState('');
   const classes = useStyles();
   const clearText = () => {
@@ -22,7 +21,7 @@ export const SearchBar: React.FC<SearchBarParams> = ({ onFind, onClear, onTextCh
     onFind?.(text);
   };
   return (
-    <Box sx={sx}>
+    <Box className={classes.root}>
       <TextField
         className={classes.textBox}
         value={text}

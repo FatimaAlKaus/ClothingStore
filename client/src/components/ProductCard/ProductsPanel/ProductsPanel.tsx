@@ -1,30 +1,59 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Pagination } from '@mui/material';
 
 import { SearchBar } from 'src/components/ProductCard/SearchBar/SearchBar';
-import { ProductList } from 'src/components/ProductCard/ProductList';
+import { Orentation, ProductList } from 'src/components/ProductCard/ProductList';
 import { ProductProps } from 'src/interfaces/ProductProps';
-import { getAllProducts } from 'src/functions/RequestApi';
+import { getProducts } from 'src/functions/RequestApi';
+import { useStyles } from 'src/components/ProductCard/ProductsPanel/ProductsPanel.styles';
 
 export const ProdoductsPanel: React.FC = () => {
   const [products, setProducts] = useState<ProductProps[]>([]);
+  const [pageCount, setPageCount] = useState<number>();
+  const [filter, setFilter] = useState<string>();
+  const [currentPage, setCurrentPage] = useState<number>(1);
+
+  const defaultPageSize = 8;
+  const classes = useStyles();
+  console.log('render');
+
   useEffect(() => {
     (async () => {
-      setProducts(await getAllProducts());
+      const response = await getProducts(currentPage, defaultPageSize, filterByName(filter));
+      setProducts(response.queryable);
+      setPageCount(response.pageCount);
     })();
-  }, []);
+  }, [filter, currentPage]);
+
+  const filterByName = (str?: string) => (str === undefined ? str : `name.contains("${str}")`);
   const searchHandler = async (text: string) => {
-    const allProducts = await getAllProducts();
-    const result =
-      text === '' ? allProducts : allProducts.filter(x => x.name.toLowerCase().includes(text.toLowerCase()));
-    setProducts(result);
+    setCurrentPage(1);
+    setFilter(text);
   };
   const clearFilter = async () => {
-    setProducts(await getAllProducts());
+    setCurrentPage(1);
+    setFilter(undefined);
+  };
+  const pageChangeHandler = async (_: unknown, number: number) => {
+    setCurrentPage(number);
   };
   return (
-    <div style={{ textAlign: 'right' }}>
-      <SearchBar onFind={searchHandler} onClear={clearFilter} sx={{ margin: '10px' }} />
-      <ProductList cards={products} />
-    </div>
+    <>
+      <div>
+        <SearchBar onFind={searchHandler} onClear={clearFilter} />
+        <ProductList orentation={Orentation.center} cards={products} />
+      </div>
+      {products.length !== 0 ? (
+        <Pagination
+          page={currentPage}
+          onChange={pageChangeHandler}
+          shape="rounded"
+          className={classes.pagination}
+          count={pageCount}
+        />
+      ) : (
+        <></>
+      )}
+    </>
   );
 };
