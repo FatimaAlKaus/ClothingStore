@@ -1,5 +1,7 @@
 version: '3'
+
 services:
+
   db:
     image: postgres
     environment:
@@ -9,6 +11,17 @@ services:
     - pgdata:/var/lib/postgresql/data
     ports:
     - "5432:5432"
+
+  server:
+    build: .
+    restart: always
+    ports:
+    - 5000:80
+    volumes:
+    - ./server/WebApi/appsettings.Docker.json:/app/appsettings.json
+    - ./server/WebApi/wwwroot/StaticFiles:/app/wwwroot/StaticFiles
+    links:
+    - db
 
   adminer:
     image: adminer

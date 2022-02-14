@@ -56,6 +56,11 @@ namespace WebApi
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<FileManager>();
+
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "wwwroot";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -68,19 +73,39 @@ namespace WebApi
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi v1"));
             }
 
+            using (var scope = app.ApplicationServices.CreateScope())
+            {
+                using (var context = scope.ServiceProvider.GetRequiredService<DatabaseContext>())
+                {
+                    context.Database.EnsureCreated();
+                }
+            }
+
             app.UseCors(policy =>
             policy
             .AllowAnyMethod()
             .AllowAnyHeader()
             .AllowAnyOrigin());
 
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseSpaStaticFiles();
+
             app.UseRouting();
-            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
+           {
+               endpoints.MapControllers();
+           });
+
+            app.UseSpa(spa =>
             {
-                endpoints.MapControllers();
+                spa.Options.SourcePath = "wwwroot";
+
+                // if (env.IsDevelopment())
+                // {
+                //     spa.UseReactDevelopmentServer(npmScript: "start");
+                // }
             });
         }
     }
