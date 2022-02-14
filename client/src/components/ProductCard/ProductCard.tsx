@@ -23,24 +23,11 @@ export const ProductCard: React.FC<ProductProps> = props => {
         raised={raised}
       >
         <Link to={`/products/${id}`}>
-          <CardMedia
-            onClick={() => {
-              clickEvent();
-            }}
-            height="600"
-            component="img"
-            image={productImage}
-          />
+          <CardMedia onClick={clickEvent} height="600" component="img" image={productImage} />
         </Link>
         <CardContent sx={{ height: '70px' }}>
           <Link style={{ textDecoration: 'none', color: 'black' }} to={`/products/${id}`}>
-            <Typography
-              className={classes.text}
-              variant="h5"
-              onClick={() => {
-                clickEvent();
-              }}
-            >
+            <Typography className={classes.text} variant="h5" onClick={clickEvent}>
               {name}
             </Typography>
           </Link>
